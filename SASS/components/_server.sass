@@ -1,0 +1,142 @@
+@import "../_variables"
+
+.server-header
+    margin-top: 1rem
+    display: grid
+    grid-template-columns: 35px auto auto
+    align-items: center
+
+    & div
+        height: 35px
+        width: 35px
+        border-radius: 50%
+
+    & .server-name
+        margin-left: 0.4rem
+        font-size: $header-font
+        text-overflow: ellipsis
+        display: -webkit-box
+        -webkit-line-clamp: 1
+        -webkit-box-orient: vertical
+        overflow: hidden
+
+    & button
+        background-color: #ffffff00
+        border: solid 2px $light-blue
+        font-size: $caption-font
+        font-weight: 700
+        float: right
+        justify-self: flex-end
+        color: $light-blue
+        padding: 0.4rem 0.5rem
+        width: fit-content
+        border-radius: 25px
+        margin-left: 5px
+        cursor: pointer
+
+        &:hover
+            border-color: $light-blue-2
+            color: $light-blue-2
+
+.server-notifications .body
+    display: grid
+    grid-template-columns: 1fr
+    gap: 1rem
+
+.notifications-card
+    background-color: $secondary-bg
+    border-radius: 15px
+    padding: 0.8rem
+
+    & .card-header
+        display: flex
+        justify-content: space-between
+
+        & .left
+            display: flex
+            align-items: center
+
+            & h5
+                margin: 0 0 0 0.4rem
+                font-size: $default-font
+                font-weight: 500
+                cursor: pointer
+                overflow: hidden
+                max-width: 160px
+
+            & img
+                height: 30px
+                width: 30px
+                border-radius: 50%
+                cursor: pointer
+
+        & .right
+            display: flex
+            align-items: center
+
+            & .card-button
+                margin-left: 0.5rem
+                height: 20px
+
+                &:hover
+                    transform: scale(1.1)
+
+            & img
+                height: 20px
+                cursor: pointer
+
+    & .card-body
+        font-size: $default-font
+
+        & p
+            margin: 0.5rem 0 0.3rem 0
+
+        & .channel
+            color: $light-blue
+            cursor: pointer
+
+    & .card-footer
+        padding: 0 0.3rem
+
+        & p
+            margin: 0
+            font-size: $secondary-font
+            text-overflow: ellipsis
+            display: -webkit-box
+            -webkit-line-clamp: 2
+            -webkit-box-orient: vertical
+            overflow: hidden
+            color: $font-color-secondary
+
+@media only screen and (min-width: 480px)
+    .notifications-card .card-header .left h5
+        max-width: 300px
+
+@media only screen and (min-width: 768px)
+    .server-header
+        grid-template-columns: 40px auto auto
+
+        & div
+            height: 40px
+            width: 40px
+
+    .server-notifications .body
+        grid-template-columns: 1fr 1fr
+        gap: 0.8rem 0.6rem
+        padding: 0 0.3rem
+
+    .notifications-card .card-header
+        & .left img
+                height: 32px
+                width: 32px
+
+        & .right
+            & .card-button
+                height: 22px
+
+            & img
+                height: 22px
+
+@media only screen and (min-width: 1024px)
+    .server-notifications .body
+        gap: 0.9rem 0.7rem

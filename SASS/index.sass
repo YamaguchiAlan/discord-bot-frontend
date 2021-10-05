@@ -1,0 +1,83 @@
+@import "./_variables"
+
+@import "./components/_main"
+@import "./components/_server"
+@import "./components/_searchbar"
+@import "./components/_header"
+
+@import "./fontawesome/fontawesome.scss"
+@import "./fontawesome/solid.scss"
+
+
+*
+    box-sizing: border-box
+
+html
+    font-size: calc(18px + (21 - 18) * ((100vw - 320px) / (1440 - 320)))
+    color: $font-color-primary
+    padding: 0
+    margin: 0
+    font-family: 'Roboto', sans-serif
+    font-weight: 400
+
+body
+    background-color: $main-bg
+    padding: 0
+    margin: 0
+    font-family: 'Roboto', sans-serif
+    font-weight: 400
+    height: 100vh
+    color: $font-color-primary
+
+#__next
+    height: 100%
+
+.grid-container
+    display: grid
+    grid-template-columns: 0.5rem 1fr 1fr 0.5rem
+    grid-template-rows: auto
+    grid-template-areas: ". main main ."
+
+.main
+    grid-area: main
+
+.body-default-card
+    margin: 1rem 0 1rem 0
+    background-color: $primary-bg
+    border-radius: 20px
+    padding: 1rem 0.5rem
+
+    & .header
+        display: flex
+        justify-content: space-between
+        margin-bottom: 0.6rem
+        align-items: center
+
+        & h3, & h4
+            margin: 0
+            font-weight: 400
+            font-size: $default-font
+
+        & h3
+            font-size: $header-font
+
+    & .searchbar
+        margin-bottom: 1.5rem
+
+@media only screen and (min-width: 768px)
+    .body-default-card
+        padding: 1rem 0.7rem
+
+@media only screen and (min-width: 1024px)
+    .grid-container
+        grid-template-columns: minmax(1rem, 1fr) repeat(2, 450px) minmax(1rem, 1fr)
+
+    .body-default-card
+        padding: 1rem 0.8rem
+
+@media only screen and (min-width: 1440px)
+    html
+        font-size: 21px
+
+    .grid-container
+        grid-template-columns: minmax(1rem, 1fr) repeat(2, minmax(500px, 1fr)) minmax(1rem, 1fr)

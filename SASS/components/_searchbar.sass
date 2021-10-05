@@ -1,0 +1,52 @@
+@import "../_variables.sass"
+
+.search
+  vertical-align: middle
+  white-space: nowrap
+  overflow: hidden
+  position: relative
+
+  & input
+    width: 100%
+    height: 35px
+
+    background: $secondary-bg
+    border: none
+    color: $font-color-secondary
+    padding: 0 10px 0 30px
+    outline: none
+    font-size: $caption-font
+
+    border-radius: 25px
+
+    &[type="search"]::-webkit-search-cancel-button
+      -webkit-appearance: none
+
+
+    &::-webkit-input-placeholder
+      color: $font-color-secondary
+
+
+    &:-moz-placeholder
+      color: $font-color-secondary
+
+  & .icon
+    background: transparent
+    position: absolute
+    border: none
+    height: 35px
+    width: 30px
+    color: $font-color-secondary
+    cursor: pointer
+    font-size: $caption-font
+
+@media only screen and (min-width: 768px)
+  .search
+    & input
+      height: 40px
+
+      padding: 0 10px 0 35px
+
+    & .icon
+      height: 40px
+      width: 35px

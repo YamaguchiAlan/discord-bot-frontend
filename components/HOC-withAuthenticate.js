@@ -14,12 +14,12 @@ const WithAuthenticate = (WrappedComponent) => {
             const {dispatch, state} = this.context
 
             if(!state.user.user_id){
-                api.get(`/authenticate${this.props.guild_id ? `?guild_id=${this.props.guild_id}` : ''}`, { withCredentials: true })
+                api.get(`/authenticate?path=${this.props.guild_id ? `/server/${this.props.guild_id}` : '/'}`, { withCredentials: true })
                 .then(res => {
                     dispatch(setUser(res.data))
                 })
                 .catch(err => {
-                    if(err.status === 301){
+                    if(err.status === 307 && err.data?.redirect){
                         this.props.router.push(err.data.redirect)
                     }
                 })
