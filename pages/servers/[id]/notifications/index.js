@@ -40,11 +40,14 @@ const MyServer = (props) => {
 
     const router = props.router
 
-    useEffect(async () => {
-        if(props.guild_id && state.user.user_id){
-            const res = await checkServer(state.user._id, props.guild_id, router)
-            setServer(res)
+    useEffect(() => {
+        async function effect() {
+            if(props.guild_id && state.user.user_id){
+                const res = await checkServer(state.user._id, props.guild_id, router)
+                setServer(res)
+            }
         }
+        effect()
       }, [props.guild_id, state.user])
 
     const onRemoveClick = (notificationId) => {
@@ -80,6 +83,7 @@ const MyServer = (props) => {
                                 src={`https://cdn.discordapp.com/icons/${server.server_id}/${server.icon}.webp?size=100`}
                                 height="50"
                                 width="50"
+                                alt="icon"
                             />
                         :
                             <span>{server.server_name.slice(0, 1)}</span>
@@ -113,6 +117,7 @@ const MyServer = (props) => {
                                             src={notification.profile_image_url}
                                             height="50"
                                             width="50"
+                                            alt="profile"
                                         />
 
                                         <h5>{notification.twitchUsername}</h5>
@@ -124,6 +129,7 @@ const MyServer = (props) => {
                                                 src={EditIcon}
                                                 height="50"
                                                 width="50"
+                                                alt="edit"
                                             />
                                         </Link>
                                         <div className="card-button">
@@ -132,6 +138,7 @@ const MyServer = (props) => {
                                                 height="50"
                                                 width="50"
                                                 onClick={() => onRemoveClick(notification._id)}
+                                                alt="delete"
                                             />
                                         </div>
                                     </div>

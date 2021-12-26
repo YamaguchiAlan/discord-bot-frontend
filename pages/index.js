@@ -73,6 +73,7 @@ function Home(props) {
                             src={`https://cdn.discordapp.com/icons/${server.id}/${server.icon}.webp?size=100`}
                             height="70"
                             width="70"
+                            alt='icon'
                           />
                         :
                           <span>{server.name.slice(0, 1)}</span>

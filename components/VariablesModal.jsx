@@ -11,6 +11,7 @@ function VariablesModal({setIsOpen}) {
                     height="30"
                     width="30"
                     onClick={() => setIsOpen(false)}
+                    alt="close"
                 />
             </div>
             <div className="discord-markdown">

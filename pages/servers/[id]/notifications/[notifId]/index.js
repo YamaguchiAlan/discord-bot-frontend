@@ -38,11 +38,14 @@ const EditNotification = ({guild_id, notificationId, router}) => {
     const [isOpen, setIsOpen] = useState(false)
     const messageRef = useRef(null)
 
-    useEffect(async () => {
-        if(guild_id && state.user.user_id){
-            const res = await checkServer(state.user._id, guild_id, router)
-            setServer(res)
+    useEffect(() => {
+        async function effect() {
+            if(guild_id && state.user.user_id){
+                const res = await checkServer(state.user._id, guild_id, router)
+                setServer(res)
+            }
         }
+        effect();
     }, [guild_id, state.user])
 
     const {data: notification, isLoading: notifLoading, isError: isNotifError} = useQuery(['notification', notificationId], () => getNotification(guild_id, notificationId))
@@ -124,6 +127,7 @@ const EditNotification = ({guild_id, notificationId, router}) => {
                             src={`https://cdn.discordapp.com/icons/${server.server_id}/${server.icon}.webp?size=100`}
                             height="50"
                             width="50"
+                            alt="icon"
                         />
                     :
                         <span>{server.server_name.slice(0, 1)}</span>

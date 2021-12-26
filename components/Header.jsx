@@ -12,6 +12,7 @@ const Header = () => {
                         src={LogoIcon}
                         height="100"
                         width="100"
+                        alt="logo"
                     />
                     <span className="logo-name">YamaBot</span>
                 </div>
@@ -21,6 +22,7 @@ const Header = () => {
                     src={MenuIcon}
                     height="100"
                     width="100"
+                    alt="menu"
                 />
             </div>
         </div>

@@ -37,11 +37,14 @@ const AddNotification = ({guild_id, router}) => {
     const usernameRef = useRef(null)
     const messageRef = useRef(null)
 
-    useEffect(async () => {
-        if(guild_id && state.user.user_id){
-            const res = await checkServer(state.user._id, guild_id, router)
-            setServer(res)
+    useEffect(() => {
+        async function effect() {
+            if(guild_id && state.user.user_id){
+                const res = await checkServer(state.user._id, guild_id, router)
+                setServer(res)
+            }
         }
+        effect()
     }, [guild_id, state.user])
 
     const {data, isLoading, isError} = useQuery(['new-notification', guild_id], () => getNewNotification(guild_id))
@@ -112,6 +115,7 @@ const AddNotification = ({guild_id, router}) => {
                             src={`https://cdn.discordapp.com/icons/${server.server_id}/${server.icon}.webp?size=100`}
                             height="50"
                             width="50"
+                            alt="icon"
                         />
                     :
                         <span>{server.server_name.slice(0, 1)}</span>
