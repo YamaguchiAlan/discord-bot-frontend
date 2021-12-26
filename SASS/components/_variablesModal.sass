@@ -1,0 +1,60 @@
+@import "../_variables.sass"
+
+.modal-table
+    display: flex
+    flex-direction: column
+    position: relative
+
+    & .close
+        position: absolute
+        display: flex
+        justify-content: flex-end
+        width: 100%
+
+        & div
+            height: 25px
+            width: 25px
+
+    & .header
+        font-size: $big-font
+        font-weight: 500
+        margin: 0 0 0.3rem 0
+
+    & .description
+        margin: 0.3rem 0 0.4rem 0
+        padding: 0 0.1rem
+        color: $font-color-secondary
+
+    & .table
+        display: grid
+        grid-template-columns: 1fr 1fr
+        grid-template-rows: auto
+        margin-bottom: 0.3rem
+
+        & .column
+            display: grid
+            grid-template-rows: repeat(8, minmax(auto, 1fr))
+            align-items: center
+
+            & span, & i, & b, & strike
+                padding: 0.5rem
+                text-align: center
+                width: 100%
+                color: $font-color-secondary
+
+            & div
+                border: 1px solid $font-color-secondary
+                display: flex
+                height: 100%
+                align-items: center
+
+            & .table-header span
+                font-weight: 500
+                color: $font-color-primary
+
+        & .variable-column
+            grid-template-rows: repeat(6, minmax(auto, 1fr))
+
+    & .discord-markdown
+        & .underline
+            text-decoration: underline

@@ -7,6 +7,7 @@ import {getServers} from '../endpoints/endpoints'
 import withAuthenticate from '../components/HOC-withAuthenticate'
 import SearchBar from '../components/SearchBar'
 import Image from 'next/image'
+import Loader from '../components/Loader'
 
 export const getServerSideProps = async () => {
   const queryClient = new QueryClient()
@@ -32,7 +33,7 @@ function Home(props) {
   }, [data])
 
   if(isLoading){
-    return <div>Loading...</div>
+    return <Loader/>
   }
 
   return (
@@ -64,9 +65,9 @@ function Home(props) {
           {
             myServers[0] ?
               myServers.map(server =>
-                <Link href={`/server/${server.id}`}>
-                  <div key={server.id} className="server-container">
-                    <div className="icon">
+                <Link href={`/servers/${server.id}/notifications`} key={server.id}>
+                  <div className="server-container">
+                    <div className="discord-icon">
                       {server.icon ?
                           <Image
                             src={`https://cdn.discordapp.com/icons/${server.id}/${server.icon}.webp?size=100`}

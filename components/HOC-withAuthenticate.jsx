@@ -14,7 +14,7 @@ const WithAuthenticate = (WrappedComponent) => {
             const {dispatch, state} = this.context
 
             if(!state.user.user_id){
-                api.get(`/authenticate?path=${this.props.guild_id ? `/server/${this.props.guild_id}` : '/'}`, { withCredentials: true })
+                api.get(`/authenticate?path=${this.props.guild_id ? `/servers/${this.props.guild_id}/notifications` : '/'}`, { withCredentials: true })
                 .then(res => {
                     dispatch(setUser(res.data))
                 })

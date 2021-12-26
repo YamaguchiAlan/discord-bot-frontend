@@ -6,10 +6,9 @@
     grid-template-columns: 35px auto auto
     align-items: center
 
-    & div
+    & .discord-icon
         height: 35px
         width: 35px
-        border-radius: 50%
 
     & .server-name
         margin-left: 0.4rem
@@ -38,10 +37,17 @@
             border-color: $light-blue-2
             color: $light-blue-2
 
-.server-notifications .body
-    display: grid
-    grid-template-columns: 1fr
-    gap: 1rem
+.server-notifications
+    .body
+        display: grid
+        grid-template-columns: 1fr
+        gap: 1rem
+
+        & .empty-notifications
+            text-align: center
+            grid-column: 1 / 3
+            font-size: $big-font
+            margin: 2rem 0
 
 .notifications-card
     background-color: $secondary-bg
@@ -108,6 +114,48 @@
             overflow: hidden
             color: $font-color-secondary
 
+.remove-modal
+    .header
+        margin: 0 0 0.3rem 0
+        font-size: $big-font
+        font-weight: 500
+
+    span
+        text-align: center
+        display: flex
+
+    .modal-buttons-container
+        margin-top: 0.5rem
+        display: flex
+        justify-content: space-between
+        button
+            background-color: #ffffff00
+            border: solid 2px #F5222D
+            color: #F5222D
+            font-size: $caption-font
+            font-weight: 700
+            padding: 0.3rem 0.4rem
+            width: fit-content
+            border-radius: 7px
+            cursor: pointer
+
+            &:hover
+                border: solid 2px #b81c24
+                color: #b81c24
+
+        .confirm
+            margin-left: 0.3rem
+
+        .cancel
+            border: solid 2px $light-blue
+            color: $light-blue
+
+
+            &:hover
+                border: solid 2px $light-blue-2
+                color: $light-blue-2
+
+
 @media only screen and (min-width: 480px)
     .notifications-card .card-header .left h5
         max-width: 300px
@@ -116,7 +164,7 @@
     .server-header
         grid-template-columns: 40px auto auto
 
-        & div
+        & .discord-icon
             height: 40px
             width: 40px
 
