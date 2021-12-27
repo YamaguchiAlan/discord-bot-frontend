@@ -1,5 +1,5 @@
 import axios from 'axios'
-const secret = process.env.HEADER_SECRET
+const secret = process.env.NEXT_PUBLIC_HEADER_SECRET
 
 const api = axios.create({
     baseURL: "https://yamabot-server.tk/api",
