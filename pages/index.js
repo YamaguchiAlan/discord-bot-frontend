@@ -8,6 +8,8 @@ import withAuthenticate from '../components/HOC-withAuthenticate'
 import SearchBar from '../components/SearchBar'
 import Image from 'next/image'
 import Loader from '../components/Loader'
+import toast from 'react-hot-toast'
+import ServerCard from '../components/ServerCard'
 
 export const getServerSideProps = async () => {
   const queryClient = new QueryClient()
@@ -25,6 +27,8 @@ function Home(props) {
   const {data, isLoading, isError} = useQuery(['servers'], () => getServers())
 
   const [myServers, setMyServers] = useState([])
+  const [filteredServers, setFilteredServers] = useState([])
+  const [filter, setFilter] = useState("")
 
   useEffect(() => {
     if(data){
@@ -32,8 +36,17 @@ function Home(props) {
     }
   }, [data])
 
+  useEffect(() => {
+    const filterServers = myServers.filter(s => s.name.toLowerCase().includes(filter.toLowerCase()))
+    setFilteredServers(filterServers)
+  }, [filter])
+
   if(isLoading){
     return <Loader/>
+  }
+
+  if(isError){
+    toast.error("An error has occurred")
   }
 
   return (
@@ -58,33 +71,26 @@ function Home(props) {
           </div>
 
           <div className="searchbar">
-              <SearchBar/>
+              <SearchBar placeholder="Search" onChange={setFilter}/>
           </div>
 
           <div className="main-body">
           {
             myServers[0] ?
-              myServers.map(server =>
-                <Link href={`/servers/${server.id}/notifications`} key={server.id}>
-                  <div className="server-container">
-                    <div className="discord-icon">
-                      {server.icon ?
-                          <Image
-                            src={`https://cdn.discordapp.com/icons/${server.id}/${server.icon}.webp?size=100`}
-                            height="70"
-                            width="70"
-                            alt='icon'
-                          />
-                        :
-                          <span>{server.name.slice(0, 1)}</span>
-                      }
-                    </div>
-
-                    <span className="server-name">{server.name}</span>
+              filter ?
+                filteredServers[0] ?
+                  <ServerCard data={filteredServers}/>
+                :
+                  <div className="empty-servers">
+                      No results found
                   </div>
-                </Link>
-              )
-              : <div>error</div>
+              :
+                <ServerCard data={myServers}/>
+              :
+                <div className="empty-servers">
+                    Looks like you don't have a Discord server yet. <br />
+                    Create one so you can add the bot!
+                </div>
           }
           </div>
         </div>

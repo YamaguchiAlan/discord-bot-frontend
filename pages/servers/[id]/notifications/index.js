@@ -6,12 +6,12 @@ import { dehydrate } from 'react-query/hydration'
 import WithAuthenticate from "../../../../components/HOC-withAuthenticate"
 import toast from 'react-hot-toast'
 import Image from 'next/image'
-import EditIcon from '../../../../public/Edit.svg'
-import DeleteIcon from '../../../../public/Delete.svg'
 import Head from "next/head"
 import Link from "next/link"
 import Loader from "../../../../components/Loader"
 import Modal from 'react-modal'
+import SearchBar from "../../../../components/SearchBar"
+import NotificationCard from "../../../../components/NotificationCard"
 
 
 
@@ -36,6 +36,8 @@ const MyServer = (props) => {
     const [server, setServer] = useState(null)
     const [isOpen, setIsOpen] = useState(false)
     const [selectedNotification, setSelectedNotification] = useState(null)
+    const [filter, setFilter] = useState("")
+    const [filteredNotifications, setFilteredNotifications] = useState([])
     const {data, isLoading, isError, refetch} = useQuery(["notifications", props.guild_id], () => getNotifications(props.guild_id))
 
     const router = props.router
@@ -49,6 +51,13 @@ const MyServer = (props) => {
         }
         effect()
       }, [props.guild_id, state.user])
+
+    useEffect(() => {
+        if(data){
+            const filterNotifications = data.filter(n => n.twitchUsername.toLowerCase().includes(filter.toLowerCase()))
+            setFilteredNotifications(filterNotifications)
+        }
+    }, [filter])
 
     const onRemoveClick = (notificationId) => {
         setSelectedNotification(notificationId)
@@ -102,63 +111,26 @@ const MyServer = (props) => {
                     </div>
 
                     <div className="searchbar">
-                        <form className="search" id="search-bar">
-                            <button className="icon" type='submit'><i className="fas fa-search"></i></button>
-                            <input placeholder="Search" spellCheck="false" type="search"/>
-                        </form>
+                        <SearchBar placeholder="Search by Twitch Username" onChange={setFilter}/>
                     </div>
 
                     <div className="body">
-                        { data ? data.map(notification => (
-                            <div className="notifications-card"  key={notification._id}>
-                                <div className="card-header">
-                                    <div className="left">
-                                        <Image
-                                            src={notification.profile_image_url}
-                                            height="50"
-                                            width="50"
-                                            alt="profile"
-                                        />
-
-                                        <h5>{notification.twitchUsername}</h5>
-                                    </div>
-
-                                    <div className="right">
-                                        <Link className="card-button" href={`/servers/${props.guild_id}/notifications/${notification._id}`}>
-                                            <Image
-                                                src={EditIcon}
-                                                height="50"
-                                                width="50"
-                                                alt="edit"
-                                            />
-                                        </Link>
-                                        <div className="card-button">
-                                            <Image
-                                                src={DeleteIcon}
-                                                height="50"
-                                                width="50"
-                                                onClick={() => onRemoveClick(notification._id)}
-                                                alt="delete"
-                                            />
-                                        </div>
-                                    </div>
+                    { data ?
+                        filter ?
+                            filteredNotifications[0] ?
+                                <NotificationCard data={filteredNotifications} guild_id={props.guild_id}/>
+                            :
+                                <div className="empty-notifications">
+                                    No results found
                                 </div>
-
-                                <div className="card-body">
-                                    <p>Posted to <span className="channel">#{notification.channelName}</span></p>
-                                </div>
-
-                                <div className="card-footer">
-                                    <p>{notification.message}</p>
-                                </div>
-                            </div>
-                        ))
+                        :
+                            <NotificationCard data={data} guild_id={props.guild_id}/>
                         :
                             <div className="empty-notifications">
                                 No notifications yet.<br/>
                                 Create a new notification in your server now!
                             </div>
-                        }
+                    }
                     </div>
                     <Modal
                         isOpen={isOpen}

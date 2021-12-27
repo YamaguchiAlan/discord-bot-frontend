@@ -1,6 +1,8 @@
 import React from 'react'
 import closeIcon from '../public/Close.svg'
 import Image from 'next/image'
+import {CopyToClipboard} from 'react-copy-to-clipboard'
+import toast from 'react-hot-toast'
 
 function VariablesModal({setIsOpen}) {
     return (
@@ -49,11 +51,31 @@ function VariablesModal({setIsOpen}) {
                 <div className="table">
                     <div className="column variable-column">
                         <div className="table-header"><span>Variable</span></div>
-                        <div><span>{'{game}'}</span></div>
-                        <div><span>{'{name}'}</span></div>
-                        <div><span>{'{title}'}</span></div>
-                        <div><span>{'{viewers}'}</span></div>
-                        <div><span>{'{url}'}</span></div>
+                        <CopyToClipboard text={'{game}'}
+                            onCopy={() => toast.success("Copied to clipboard!")}
+                        >
+                            <div><span>{'{game}'}</span></div>
+                        </CopyToClipboard>
+                        <CopyToClipboard text={'{name}'}
+                            onCopy={() => toast.success("Copied to clipboard!")}
+                        >
+                            <div><span>{'{name}'}</span></div>
+                        </CopyToClipboard>
+                        <CopyToClipboard text={'{title}'}
+                            onCopy={() => toast.success("Copied to clipboard!")}
+                        >
+                            <div><span>{'{title}'}</span></div>
+                        </CopyToClipboard>
+                        <CopyToClipboard text={'{viewers}'}
+                            onCopy={() => toast.success("Copied to clipboard!")}
+                        >
+                            <div><span>{'{viewers}'}</span></div>
+                        </CopyToClipboard>
+                        <CopyToClipboard text={'{url}'}
+                            onCopy={() => toast.success("Copied to clipboard!")}
+                        >
+                            <div><span>{'{url}'}</span></div>
+                        </CopyToClipboard>
                     </div>
                     <div className="column variable-column">
                         <div className="table-header"><span>Description</span></div>
