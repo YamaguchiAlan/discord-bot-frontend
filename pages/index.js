@@ -88,7 +88,7 @@ function Home(props) {
                 <ServerCard data={myServers}/>
               :
                 <div className="empty-servers">
-                    Looks like you don't have a Discord server yet. <br />
+                    Looks like you don&apos;t have a Discord server yet. <br />
                     Create one so you can add the bot!
                 </div>
           }
