@@ -4,6 +4,6 @@ module.exports = {
     domains: ['cdn.discordapp.com', "static-cdn.jtvnw.net"]
   },
   env: {
-    NEXT_PUBLIC_HEADER_SECRET: process.env.NEXT_PUBLIC_HEADER_SECRET
+    HEADER_SECRET: process.env.HEADER_SECRET
   }
 }
