@@ -4,7 +4,9 @@ const secret = process.env.HEADER_SECRET
 const api = axios.create({
     baseURL: "https://yamabot-server.tk/api",
     headers: {
-      'Origin-Auth-Secret': secret
+      common: {
+        'Origin-Auth-Secret': secret
+      }
     }
 })
 
