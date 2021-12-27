@@ -1,7 +1,11 @@
 import axios from 'axios'
+const secret = process.env.HEADER_SECRET
 
 const api = axios.create({
-    baseURL: "https://yamabot-server.tk/api"
+    baseURL: "https://yamabot-server.tk/api",
+    headers: {
+      'Origin-Auth-Secret': secret
+    }
 })
 
 api.interceptors.response.use(function (response) {
@@ -23,7 +27,7 @@ export const checkServer = (userId, guild_id, router) => (
   .then(response => response.data)
   .catch(err => {
       if(err.status === 401 && err.data?.code === 50001){
-          router.push(`https://discord.com/oauth2/authorize?client_id=880599706428928100&permissions=103518825984&redirect_uri=http%3A%2F%2Flocalhost%3A3000&response_type=code&scope=bot`)
+          router.push(`https://discord.com/oauth2/authorize?client_id=880599706428928100&permissions=103518825984&redirect_uri=https%3A%2F%2Fyamabot-bot.tk&response_type=code&scope=bot`)
       } else {
           router.push(`/`)
       }
