@@ -4,7 +4,7 @@ import Image from 'next/image'
 import EditIcon from '../public/Edit.svg'
 import DeleteIcon from '../public/Delete.svg'
 
-function NotificationCard({data, guild_id}) {
+function NotificationCard({data, guild_id, onRemoveClick}) {
     return (
         data.map(notification => (
             <div className="notifications-card"  key={notification._id}>

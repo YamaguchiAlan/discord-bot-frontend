@@ -118,13 +118,13 @@ const MyServer = (props) => {
                     { data ?
                         filter ?
                             filteredNotifications[0] ?
-                                <NotificationCard data={filteredNotifications} guild_id={props.guild_id}/>
+                                <NotificationCard data={filteredNotifications} guild_id={props.guild_id} onRemoveClick={onRemoveClick}/>
                             :
                                 <div className="empty-notifications">
                                     No results found
                                 </div>
                         :
-                            <NotificationCard data={data} guild_id={props.guild_id}/>
+                            <NotificationCard data={data} guild_id={props.guild_id} onRemoveClick={onRemoveClick}/>
                         :
                             <div className="empty-notifications">
                                 No notifications yet.<br/>
