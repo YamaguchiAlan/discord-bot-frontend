@@ -4,7 +4,7 @@ import { DiscordGuild, GuildData, NotificationsData, ServerData, Notification } 
 const secret = process.env.NEXT_PUBLIC_HEADER_SECRET
 
 const api = axios.create({
-    baseURL: "http://localhost:4000/api",
+    baseURL: "https://server.yamabot.tk/api",
     headers: {
       common: {
         'Origin-Auth-Secret': secret
