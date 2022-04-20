@@ -1,6 +1,10 @@
 import React from 'react'
 
-function Loader({page}) {
+interface Props {
+    page?: boolean | undefined
+}
+
+const Loader:React.FC<Props> = ({page}) => {
     return (
         <div className="loader-container" style={{height: page ? "100%" : "80%"}}>
             <div className='loader'></div>

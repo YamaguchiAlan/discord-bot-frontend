@@ -1,20 +1,25 @@
 import React from 'react'
 import api from '../endpoints/endpoints'
-import { UserContext } from '../state/context'
+import { UserContext, UserContextType } from '../state/context'
 import { setUser } from '../state/reducer'
-import { withRouter } from 'next/router'
+import { withRouter, NextRouter } from 'next/router'
+
+interface Props {
+    guild_id?: string,
+    router: NextRouter
+}
 
 const WithAuthenticate = (WrappedComponent) => {
-    class withAuthenticateComponent extends React.Component{
+    class withAuthenticateComponent extends React.Component<Props>{
         render(){
             return <WrappedComponent {...this.props}/>
         }
 
         componentDidMount(){
-            const {dispatch, state} = this.context
+            const {dispatch, state}: UserContextType = this.context
 
             if(!state.user.user_id){
-                api.get(`/authenticate?path=${this.props.guild_id ? `/servers/${this.props.guild_id}/notifications` : '/'}`, { withCredentials: true })
+                api.get(`/authenticate?path=${this.props?.guild_id ? `/servers/${this.props?.guild_id}/notifications` : '/'}`, { withCredentials: true })
                 .then(res => {
                     dispatch(setUser(res.data))
                 })

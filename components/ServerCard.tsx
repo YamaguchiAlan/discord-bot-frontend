@@ -1,10 +1,16 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { DiscordGuild } from '../types'
 
-function ServerCard({data}) {
+interface Props {
+  data: DiscordGuild[]
+}
+
+const ServerCard: React.FC<Props> = ({data}) => {
     return (
-        data.map(server =>
+      <>
+          {data.map(server =>
             <Link href={`/servers/${server.id}/notifications`} key={server.id}>
               <div className="server-container">
                 <div className="discord-icon">
@@ -23,7 +29,8 @@ function ServerCard({data}) {
                 <span className="server-name">{server.name}</span>
               </div>
             </Link>
-          )
+          )}
+      </>
     )
 }
 

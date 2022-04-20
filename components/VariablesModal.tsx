@@ -4,7 +4,11 @@ import Image from 'next/image'
 import {CopyToClipboard} from 'react-copy-to-clipboard'
 import toast from 'react-hot-toast'
 
-function VariablesModal({setIsOpen}) {
+interface Props {
+    setIsOpen: (state: boolean) => void
+}
+
+const VariablesModal: React.FC<Props> = ({setIsOpen}) => {
     return (
         <div className="modal-table">
             <div className="close">
@@ -41,7 +45,7 @@ function VariablesModal({setIsOpen}) {
                         <div><i className='underline'>Underline Italics</i></div>
                         <div><b className='underline'>Underline Bold</b></div>
                         <div><i className='underline'><b>Underline Bold Italics</b></i></div>
-                        <div><strike>Strikethrough</strike></div>
+                        <div><span className='strike'>Strikethrough</span></div>
                     </div>
                 </div>
             </div>

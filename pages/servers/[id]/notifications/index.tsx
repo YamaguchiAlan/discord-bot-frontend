@@ -1,8 +1,9 @@
 import { useEffect, useContext, useState } from "react"
+import {GetServerSideProps} from 'next'
 import api, {checkServer, getNotifications} from '../../../../endpoints/endpoints'
 import {UserContext} from '../../../../state/context'
 import { QueryClient, useQuery } from 'react-query'
-import { dehydrate } from 'react-query/hydration'
+import { dehydrate, DehydratedState } from 'react-query/hydration'
 import WithAuthenticate from "../../../../components/HOC-withAuthenticate"
 import toast from 'react-hot-toast'
 import Image from 'next/image'
@@ -12,11 +13,21 @@ import Loader from "../../../../components/Loader"
 import Modal from 'react-modal'
 import SearchBar from "../../../../components/SearchBar"
 import NotificationCard from "../../../../components/NotificationCard"
+import { NextRouter } from "next/router"
+import { NotificationsData, ServerData } from "../../../../types"
 
+interface Props {
+    guild_id: string,
+    dehydratedState: DehydratedState,
+    router?: NextRouter
+}
 
+interface Query{
+    id?: string
+}
 
-export const getServerSideProps = async (context) => {
-    const {id} = context.query
+export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
+    const {id}: Query = context.query
     Modal.setAppElement("#app");
 
     const queryClient = new QueryClient()
@@ -31,13 +42,13 @@ export const getServerSideProps = async (context) => {
     }
 }
 
-const MyServer = (props) => {
+const MyServer: React.FC<Props> = (props) => {
     const {state} = useContext(UserContext)
-    const [server, setServer] = useState(null)
-    const [isOpen, setIsOpen] = useState(false)
-    const [selectedNotification, setSelectedNotification] = useState(null)
-    const [filter, setFilter] = useState("")
-    const [filteredNotifications, setFilteredNotifications] = useState([])
+    const [server, setServer] = useState<ServerData>(null)
+    const [isOpen, setIsOpen] = useState<boolean>(false)
+    const [selectedNotification, setSelectedNotification] = useState<string>(null)
+    const [filter, setFilter] = useState<string>("")
+    const [filteredNotifications, setFilteredNotifications] = useState<NotificationsData[]>([])
     const {data, isLoading, isError, refetch} = useQuery(["notifications", props.guild_id], () => getNotifications(props.guild_id))
 
     const router = props.router
@@ -45,7 +56,7 @@ const MyServer = (props) => {
     useEffect(() => {
         async function effect() {
             if(props.guild_id && state.user.user_id){
-                const res = await checkServer(state.user._id, props.guild_id, router)
+                const res = await checkServer(state.user?._id, props.guild_id, router)
                 setServer(res)
             }
         }
@@ -59,7 +70,7 @@ const MyServer = (props) => {
         }
     }, [filter])
 
-    const onRemoveClick = (notificationId) => {
+    const onRemoveClick = (notificationId: string): void => {
         setSelectedNotification(notificationId)
         setIsOpen(true)
     }

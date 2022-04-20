@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { QueryClient, useQuery } from 'react-query'
 import { dehydrate } from 'react-query/hydration'
@@ -9,6 +8,7 @@ import SearchBar from '../components/SearchBar'
 import Loader from '../components/Loader'
 import toast from 'react-hot-toast'
 import ServerCard from '../components/ServerCard'
+import { DiscordGuild } from '../types'
 
 export const getServerSideProps = async () => {
   const queryClient = new QueryClient()
@@ -22,12 +22,12 @@ export const getServerSideProps = async () => {
   }
 }
 
-function Home(props) {
+const Home: React.FC = () => {
   const {data, isLoading, isError} = useQuery(['servers'], () => getServers())
 
-  const [myServers, setMyServers] = useState([])
-  const [filteredServers, setFilteredServers] = useState([])
-  const [filter, setFilter] = useState("")
+  const [myServers, setMyServers] = useState<DiscordGuild[]>([])
+  const [filteredServers, setFilteredServers] = useState<DiscordGuild[]>([])
+  const [filter, setFilter] = useState<string>("")
 
   useEffect(() => {
     if(data){
