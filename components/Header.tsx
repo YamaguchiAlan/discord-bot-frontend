@@ -1,9 +1,10 @@
+import React from 'react'
 import LogoIcon from '../public/Logo.svg'
 import MenuIcon from '../public/Menu.svg'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const Header = () => {
+const Header: React.FC = () => {
     return (
         <div id="header">
             <Link href="/">

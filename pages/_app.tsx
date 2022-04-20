@@ -1,4 +1,5 @@
 import { useState, useReducer, useEffect} from 'react'
+import {AppProps} from 'next/app'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Hydrate } from 'react-query/hydration'
 import Router from 'next/router'
@@ -6,14 +7,14 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import { userReducer, initialUserState} from '../state/reducer'
 import { UserContext } from '../state/context'
 import Header from '../components/Header'
-import { Toaster } from 'react-hot-toast'
+import { Toaster, DefaultToastOptions } from 'react-hot-toast'
 
 import "../CSS/index.css"
 import Loader from '../components/Loader'
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient())
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const [state, dispatch] = useReducer(userReducer, initialUserState)
 
   useEffect(() => {
@@ -35,6 +36,23 @@ function MyApp({ Component, pageProps }) {
     return <Loader page/>
   }
 
+  const toastOpt: DefaultToastOptions = {
+    success: {
+      style: {
+        background: '#414141',
+        border: '1px solid #00853c',
+        color: '#eeeeee'
+      }
+    },
+    error: {
+      style: {
+        background: '#414141',
+        border: '1px solid red',
+        color: '#eeeeee'
+      }
+    }
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
@@ -44,22 +62,7 @@ function MyApp({ Component, pageProps }) {
             <Component {...pageProps} />
             <Toaster
                 position="top-center"
-                toastOptions={{
-                    success: {
-                      style: {
-                        background: '#414141',
-                        border: '1px solid #00853c',
-                        color: '#eeeeee'
-                      }
-                    },
-                    error: {
-                      style: {
-                        background: '#414141',
-                        border: '1px solid red',
-                        color: '#eeeeee'
-                      }
-                    }
-                  }}
+                toastOptions={toastOpt}
             />
           </div>
         </UserContext.Provider>

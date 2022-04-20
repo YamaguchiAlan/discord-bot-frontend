@@ -1,4 +1,11 @@
-const SearchBar = ({placeholder, onChange}) =>
+import React, { Dispatch, SetStateAction } from 'react'
+
+interface Props {
+    placeholder: string,
+    onChange: Dispatch<SetStateAction<string>>
+}
+
+const SearchBar: React.FC<Props> = ({placeholder, onChange}) =>
 (
     <form className="search" id="search-bar">
         <button className="icon" type='button'><i className="fas fa-search"></i></button>

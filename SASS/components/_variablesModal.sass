@@ -37,11 +37,14 @@
             grid-template-rows: repeat(8, minmax(auto, 1fr))
             align-items: center
 
-            & span, & i, & b, & strike
+            & span, & i, & b
                 padding: 0.5rem
                 text-align: center
                 width: 100%
                 color: $font-color-secondary
+
+            & .strike
+                text-decoration: line-through
 
             & div
                 border: 1px solid $font-color-secondary

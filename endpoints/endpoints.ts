@@ -1,8 +1,10 @@
 import axios from 'axios'
+import { NextRouter } from 'next/router';
+import { DiscordGuild, GuildData, NotificationsData, ServerData, Notification } from '../types';
 const secret = process.env.NEXT_PUBLIC_HEADER_SECRET
 
 const api = axios.create({
-    baseURL: "https://server.yamabot.tk/api",
+    baseURL: "http://localhost:4000/api",
     headers: {
       common: {
         'Origin-Auth-Secret': secret
@@ -16,15 +18,15 @@ api.interceptors.response.use(function (response) {
   return Promise.reject(error.response);
 });
 
-export const getServers = () => (
+export const getServers = (): Promise<DiscordGuild[]> => (
   api.get("/servers", { withCredentials: true }).then(res => res.data)
 )
 
-export const getNewNotification = (guildId) => (
+export const getGuildData = (guildId: string): Promise<GuildData> => (
   api.get(`/servers/${guildId}/notifications/@new`).then(res => res.data)
 )
 
-export const checkServer = (userId, guild_id, router) => (
+export const checkServer = (userId: string, guild_id: string, router: NextRouter): Promise<ServerData> => (
   api.get(`/users/${userId}/guilds/${guild_id}/check`)
   .then(response => response.data)
   .catch(err => {
@@ -36,11 +38,11 @@ export const checkServer = (userId, guild_id, router) => (
   })
 )
 
-export const getNotifications = (guildId) => (
+export const getNotifications = (guildId: string): Promise<NotificationsData[]> => (
   api.get(`/servers/${guildId}/notifications`).then(res => res.data)
 )
 
-export const getNotification = (guildId, notificationId) => (
+export const getNotification = (guildId: string, notificationId: string): Promise<Notification> => (
   api.get(`/servers/${guildId}/notifications/${notificationId}`).then(res => res.data)
 )
 

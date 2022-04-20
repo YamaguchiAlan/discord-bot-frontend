@@ -3,40 +3,52 @@ import { UserContext } from '../../../../../state/context'
 import WithAuthenticate from "../../../../../components/HOC-withAuthenticate"
 import Image from "next/image"
 import Head from "next/head"
-import { QueryClient, useQuery } from 'react-query'
+import { DehydratedState, QueryClient, useQuery } from 'react-query'
 import { dehydrate } from 'react-query/hydration'
-import api, {getNewNotification, checkServer, getNotification} from '../../../../../endpoints/endpoints'
+import api, {getGuildData, checkServer} from '../../../../../endpoints/endpoints'
 import Select from 'react-select'
 import toast from 'react-hot-toast'
 import Modal from 'react-modal'
 import Loader from '../../../../../components/Loader'
 import VariablesModal from '../../../../../components/VariablesModal'
+import { NextRouter } from 'next/router'
+import { GetServerSideProps } from 'next'
+import { ServerData, SelectRoleOption, SelectChannelOption } from '../../../../../types'
 
-export const getServerSideProps = async (context) => {
-    const {id, notifId} = context.query
+interface Props {
+    guild_id: string,
+    router?: NextRouter,
+    dehydratedState: DehydratedState
+}
+
+interface Query{
+    id?: string
+}
+
+export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
+    const {id}: Query = context.query
     Modal.setAppElement("#app");
 
     const queryClient = new QueryClient()
 
-    await queryClient.prefetchQuery(['new-notification', id], () => getNewNotification(id))
-    await queryClient.prefetchQuery(['notification', notifId], () => getNotification(id, notifId))
+    await queryClient.prefetchQuery(['new-notification', id], () => getGuildData(id))
 
     return {
         props: {
             guild_id: id,
-            notificationId: notifId,
             dehydratedState: dehydrate(queryClient)
         }
     }
 }
 
-const EditNotification = ({guild_id, notificationId, router}) => {
+const AddNotification: React.FC<Props> = ({guild_id, router}) => {
     const {state} = useContext(UserContext)
-    const [role, setRole] = useState({value: "@everyone", label: "@everyone"})
-    const [server, setServer] = useState(null)
-    const [channel, setChannel] = useState(null)
-    const [isOpen, setIsOpen] = useState(false)
-    const messageRef = useRef(null)
+    const [role, setRole] = useState<SelectRoleOption>({value: "@everyone", label: "@everyone"})
+    const [server, setServer] = useState<ServerData>(null)
+    const [isOpen, setIsOpen] = useState<boolean>(false)
+    const [channel, setChannel] = useState<SelectChannelOption>(null)
+    const usernameRef = useRef<HTMLInputElement>(null)
+    const messageRef = useRef<HTMLTextAreaElement>(null)
 
     useEffect(() => {
         async function effect() {
@@ -45,50 +57,43 @@ const EditNotification = ({guild_id, notificationId, router}) => {
                 setServer(res)
             }
         }
-        effect();
+        effect()
     }, [guild_id, state.user])
 
-    const {data: notification, isLoading: notifLoading, isError: isNotifError} = useQuery(['notification', notificationId], () => getNotification(guild_id, notificationId))
+    const {data, isLoading, isError} = useQuery(['new-notification', guild_id], () => getGuildData(guild_id))
 
-    useEffect(() => {
-        if(notification && !isNotifError){
-            setChannel({
-                value: {
-                    id: notification.channel,
-                    name: notification.channelName
-                },
-                label: `#${notification.channelName}`
-            })
-        }
-    }, [notification])
-
-    const {data, isLoading, isError} = useQuery(['new-notification', guild_id], () => getNewNotification(guild_id))
-
-    const roleOptions = data?.roles.filter(r => r.name !== "@everyone").map(r => ({
+    const roleOptions: SelectRoleOption[] = data?.roles.filter(r => r.name !== "@everyone").map(r => ({
         value: `<@&${r.id}>`, label: r.name
     }))
 
-    const channelOptions = data?.channels.map(c => ({
+    const channelOptions: SelectChannelOption[] = data?.channels.map(c => ({
         value: {id: c.id, name: c.name}, label: `#${c.name}`
     }))
 
-    const submit = async (e) => {
+    const submit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const addButton = document.getElementById("add-button")
+        const addButton = (document.getElementById("add-button") as HTMLButtonElement)
         addButton.disabled = true
 
         const newNotification = {
+            userId: state.user.user_id,
+            username: usernameRef.current.value,
             channel: channel.value.id,
             channelName: channel.value.name,
             message: messageRef.current.value
         }
 
         try {
-            await api.put(`/servers/${guild_id}/notifications/${notificationId}`, newNotification)
+            await api.post(`/servers/${guild_id}/notifications`, newNotification)
             router.push(`/servers/${guild_id}/notifications`)
         } catch (err) {
-            toast.error("Something Went Wrong!")
+            if(err.status === 404){
+                toast.error("Incorrect Username")
+                usernameRef.current.classList.add("error")
+            } else{
+                toast.error("Something Went Wrong!")
+            }
         }
         addButton.disabled = false
     }
@@ -107,16 +112,12 @@ const EditNotification = ({guild_id, notificationId, router}) => {
         }
     }
 
-    if(isLoading || !server || notifLoading) return <Loader/>;
-
-    if(isError || isNotifError) {
-        router.push(`/servers/${guild_id}/notifications`)
-    }
+    if(isLoading || !server) return <Loader/>;
 
     return(
         <>
         <Head>
-            <title>Edit Notification</title>
+            <title>Add Notification</title>
         </Head>
         <div className="grid-container">
             <div className="main">
@@ -137,19 +138,21 @@ const EditNotification = ({guild_id, notificationId, router}) => {
                 </div>
                 <div className="body-default-card">
                     <div className="header">
-                        <h3>Edit Notification</h3>
+                        <h3>Add Notification</h3>
                     </div>
                     <div className="body">
                         <form className="notification-form" onSubmit={submit}>
                             <label className="notification-label">Streamer Username</label>
+                            <span className="input-helper">Enter the exact Twitch username of the streamer</span>
                             <input
                                 autoComplete="off"
                                 name="username"
                                 id="username"
                                 type="text"
                                 placeholder="Username"
-                                disabled
-                                value={notification.twitchUsername}
+                                ref={usernameRef}
+                                required
+                                onChange={(e) => e.target.classList.remove("error")}
                             />
 
                             <label className="notification-label">Channel</label>
@@ -186,11 +189,11 @@ const EditNotification = ({guild_id, notificationId, router}) => {
                                     />
                                     <button className="mention-button" type="button" onClick={insertMention}>Insert Mention</button>
                                 </div>
-                                <textarea name="message" id="message" placeholder="Message" ref={messageRef} defaultValue={notification.message} required></textarea>
+                                <textarea name="message" id="message" placeholder="Message" ref={messageRef} required></textarea>
                             </div>
 
                             <div className="notification-buttons">
-                                <button id="add-button" type="submit" className="add-button" disabled={!channel}>Edit Notification</button>
+                                <button id="add-button" type="submit" className="add-button" disabled={!channel}>Add Notification</button>
                                 <button className="cancel-button" type="button" onClick={() => router.push(`/servers/${guild_id}/notifications`)}>Cancel</button>
                             </div>
                         </form>
@@ -208,4 +211,4 @@ const EditNotification = ({guild_id, notificationId, router}) => {
     )
 }
 
-export default WithAuthenticate(EditNotification)
+export default WithAuthenticate(AddNotification)

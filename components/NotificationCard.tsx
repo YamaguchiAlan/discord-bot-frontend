@@ -3,10 +3,18 @@ import Link from 'next/link'
 import Image from 'next/image'
 import EditIcon from '../public/Edit.svg'
 import DeleteIcon from '../public/Delete.svg'
+import { NotificationsData } from '../types'
 
-function NotificationCard({data, guild_id, onRemoveClick}) {
+interface Props {
+    data: NotificationsData[],
+    guild_id: string,
+    onRemoveClick: (notificationId: string) => void
+}
+
+const NotificationCard: React.FC<Props> = ({data, guild_id, onRemoveClick}) => {
     return (
-        data.map(notification => (
+    <>
+        {data.map(notification => (
             <div className="notifications-card"  key={notification._id}>
                 <div className="card-header">
                     <div className="left">
@@ -21,13 +29,15 @@ function NotificationCard({data, guild_id, onRemoveClick}) {
                     </div>
 
                     <div className="right">
-                        <Link className="card-button" href={`/servers/${guild_id}/notifications/${notification._id}`}>
-                            <Image
-                                src={EditIcon}
-                                height="50"
-                                width="50"
-                                alt="edit"
-                            />
+                        <Link href={`/servers/${guild_id}/notifications/${notification._id}`}>
+                            <div className="card-button">
+                                <Image
+                                    src={EditIcon}
+                                    height="50"
+                                    width="50"
+                                    alt="edit"
+                                />
+                            </div>
                         </Link>
                         <div className="card-button">
                             <Image
@@ -49,7 +59,8 @@ function NotificationCard({data, guild_id, onRemoveClick}) {
                     <p>{notification.message}</p>
                 </div>
             </div>
-        ))
+        ))}
+    </>
     )
 }
 

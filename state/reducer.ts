@@ -2,15 +2,16 @@ import {UserActions, ActionType, ISetUser} from './actions'
 
 export interface UserState {
     user: {
-        user_id: string | undefined
-        username: string | undefined
+        user_id: string | undefined,
+        username: string | undefined,
+        _id?: string | undefined
     }
 }
 
 export const initialUserState: UserState = {
     user: {
         user_id: undefined,
-        username: undefined
+        username: undefined,
     }
 }
 
