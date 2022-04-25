@@ -5,7 +5,7 @@ import { UserActions } from '../state/actions';
 import { removeUser } from '../state/reducer';
 import { DiscordGuild, GuildData, NotificationsData, ServerData, Notification } from '../types';
 const secret = process.env.NEXT_PUBLIC_HEADER_SECRET
-const production = process.env.PRODUCTION
+const production = process.env.NEXT_PUBLIC_PRODUCTION
 
 const api = axios.create({
     baseURL: production ? "https://server.yamabot.tk/api" : "http://localhost:4000/api",
