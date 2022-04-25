@@ -400,7 +400,70 @@
 #header .menu img {
   height: 2rem;
   width: 2rem;
+  border-radius: 50%;
   cursor: pointer;
+}
+
+#header .menu .dropdown {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  position: absolute;
+  right: 0.5rem;
+  background: #171d1d;
+  padding: 0.3rem;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  -webkit-box-shadow: -4px 10px 24px 5px rgba(0, 0, 0, 0.4);
+          box-shadow: -4px 10px 24px 5px rgba(0, 0, 0, 0.4);
+}
+
+#header .menu .dropdown .item {
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 5px;
+}
+
+#header .menu .dropdown .item:hover {
+  background: rgba(158, 158, 158, 0.15);
+}
+
+#header .menu .dropdown .log-out {
+  color: red;
+}
+
+#header .menu .user {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0.3rem;
+}
+
+#header .menu .user img {
+  cursor: auto !important;
+}
+
+#header .menu .user .text {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-left: 5px;
+}
+
+#header .menu .user .text .discriminator {
+  font-size: 0.75rem;
+  color: #c2c2c2;
 }
 
 @media only screen and (min-width: 768px) {

@@ -10,6 +10,8 @@ import toast from 'react-hot-toast'
 import ServerCard from '../components/ServerCard'
 import { DiscordGuild } from '../types'
 
+const production = process.env.PRODUCTION
+
 export const getServerSideProps = async () => {
   const queryClient = new QueryClient()
 
@@ -58,7 +60,7 @@ const Home: React.FC = () => {
         <div className="main-header">
           <p>Select a server to add or manage the bot.</p>
           <p>Or invite YamaBot to your server <a
-            href="https://discord.com/oauth2/authorize?client_id=880599706428928100&permissions=271764480&redirect_uri=https%3A%2F%2Fapp.yamabot.tk&response_type=code&scope=bot"
+            href={`https://discord.com/oauth2/authorize?client_id=880599706428928100&permissions=271764480&redirect_uri=${production ? "https%3A%2F%2Fapp.yamabot.tk" : "http%3A%2F%2Flocalhost%3A3000"}&response_type=code&scope=bot`}
               >here.
             </a>
           </p>

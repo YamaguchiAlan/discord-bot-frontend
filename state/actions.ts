@@ -1,13 +1,16 @@
+import {UserState} from './reducer'
+
 export enum ActionType {
-    SetUSer
+    SetUSer,
+    RemoveUser
 }
 
-export interface ISetUser {
-    type: ActionType.SetUSer,
-    user: {
-        user_id: string,
-        username: string
-    }
+export interface ISetUser extends UserState {
+    type: ActionType.SetUSer
 }
 
-export type UserActions = ISetUser
+export interface IRemoveUser {
+    type: ActionType.RemoveUser
+}
+
+export type UserActions = ISetUser | IRemoveUser

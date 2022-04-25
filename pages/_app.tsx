@@ -58,7 +58,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Hydrate state={pageProps.dehydratedState}>
         <UserContext.Provider value={{state, dispatch}}>
           <div id="app">
-            <Header/>
+            <Header user={state.user} dispatch={dispatch}/>
             <Component {...pageProps} />
             <Toaster
                 position="top-center"

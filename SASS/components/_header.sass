@@ -24,10 +24,51 @@
             font-size: 1.7rem
             font-weight: 500
 
-    & .menu img
-        height: 2rem
-        width: 2rem
-        cursor: pointer
+    & .menu
+        & img
+            height: 2rem
+            width: 2rem
+            border-radius: 50%
+            cursor: pointer
+
+        & .dropdown
+            display: flex
+            flex-direction: column
+            justify-content: flex-start
+            position: absolute
+            right: 0.5rem
+            background: #171d1d
+            padding: 0.3rem
+            border-radius: 5px
+            font-size: $small-font
+            box-shadow: -4px 10px 24px 5px rgba(0,0,0,0.4)
+
+            & .item
+                cursor: pointer
+                padding: 0.3rem
+                border-radius: 5px
+
+                &:hover
+                    background: rgba(158, 158, 158, 0.15)
+
+            & .log-out
+                color: red
+
+        & .user
+            display: flex
+            padding: 0.3rem
+
+            & img
+                cursor: auto !important
+
+            & .text
+                display: flex
+                flex-direction: column
+                margin-left: 5px
+
+                & .discriminator
+                    font-size: $caption-font
+                    color: $font-color-secondary
 
 @media only screen and (min-width: 768px)
     #header
