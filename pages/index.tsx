@@ -10,7 +10,7 @@ import toast from 'react-hot-toast'
 import ServerCard from '../components/ServerCard'
 import { DiscordGuild } from '../types'
 
-const production = process.env.PRODUCTION
+const production = process.env.NEXT_PUBLIC_PRODUCTION
 
 export const getServerSideProps = async () => {
   const queryClient = new QueryClient()
