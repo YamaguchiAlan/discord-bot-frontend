@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
-import { QueryClient, useQuery } from 'react-query'
-import { dehydrate } from 'react-query/hydration'
+import { useQuery } from 'react-query'
 import {getServers} from '../endpoints/endpoints'
 import withAuthenticate from '../components/HOC-withAuthenticate'
 import SearchBar from '../components/SearchBar'
@@ -11,18 +10,6 @@ import ServerCard from '../components/ServerCard'
 import { DiscordGuild } from '../types'
 
 const production = process.env.NEXT_PUBLIC_PRODUCTION
-
-export const getServerSideProps = async () => {
-  const queryClient = new QueryClient()
-
-  await queryClient.prefetchQuery(['servers'], () => getServers())
-
-  return{
-      props: {
-          dehydratedState: dehydrate(queryClient)
-      }
-  }
-}
 
 const Home: React.FC = () => {
   const {data, isLoading, isError} = useQuery(['servers'], () => getServers())
