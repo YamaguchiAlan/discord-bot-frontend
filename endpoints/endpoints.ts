@@ -22,12 +22,14 @@ api.interceptors.response.use(function (response) {
   return Promise.reject(error.response);
 });
 
+const backendConfig = {headers: {origin: production ? "https://app.yamabot.tk" : "http://localhost:3000"}}
+
 export const getServers = (): Promise<DiscordGuild[]> => (
   api.get("/servers", { withCredentials: true }).then(res => res.data)
 )
 
-export const getGuildData = (guildId: string): Promise<GuildData> => (
-  api.get(`/servers/${guildId}/notifications/@new`).then(res => res.data)
+export const getGuildData = (guildId: string, backend?: boolean): Promise<GuildData> => (
+  api.get(`/servers/${guildId}/notifications/@new`, backend && backendConfig).then(res => res.data)
 )
 
 export const checkServer = (userId: string, guild_id: string, router: NextRouter): Promise<ServerData> => (
@@ -48,11 +50,11 @@ export const checkServer = (userId: string, guild_id: string, router: NextRouter
 )
 
 export const getNotifications = (guildId: string, backend?: boolean): Promise<NotificationsData[]> => (
-  api.get(`/servers/${guildId}/notifications`, backend && {headers: {origin: production ? "https://app.yamabot.tk" : "http://localhost:3000"}}).then(res => res.data)
+  api.get(`/servers/${guildId}/notifications`, backend && backendConfig).then(res => res.data)
 )
 
-export const getNotification = (guildId: string, notificationId: string): Promise<Notification> => (
-  api.get(`/servers/${guildId}/notifications/${notificationId}`).then(res => res.data)
+export const getNotification = (guildId: string, notificationId: string, backend?: boolean): Promise<Notification> => (
+  api.get(`/servers/${guildId}/notifications/${notificationId}`, backend && backendConfig).then(res => res.data)
 )
 
 export const userLogout = async (dispatch: Dispatch<UserActions>, router: NextRouter) => {

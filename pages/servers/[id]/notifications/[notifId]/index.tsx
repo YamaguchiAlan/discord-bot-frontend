@@ -33,8 +33,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
 
     const queryClient = new QueryClient()
 
-    await queryClient.prefetchQuery(['new-notification', id], () => getGuildData(id))
-    await queryClient.prefetchQuery(['notification', notifId], () => getNotification(id, notifId))
+    await queryClient.prefetchQuery(['new-notification', id], () => getGuildData(id, true))
+    await queryClient.prefetchQuery(['notification', notifId], () => getNotification(id, notifId, true))
 
     return {
         props: {
