@@ -92,7 +92,7 @@ const MyServer: React.FC<Props> = (props) => {
     return (
         <>
             <Head>
-                <title>Bot_test</title>
+                <title>{server.server_name}</title>
             </Head>
             <div className="grid-container">
                 <div className="main">

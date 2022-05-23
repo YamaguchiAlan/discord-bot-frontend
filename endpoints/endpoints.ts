@@ -11,8 +11,7 @@ const api = axios.create({
     baseURL: production ? "https://server.yamabot.tk/api" : "http://localhost:4000/api",
     headers: {
       common: {
-        'Origin-Auth-Secret': secret,
-        'Origin': production ? "https://app.yamabot.tk" : "http://localhost:3000"
+        'Origin-Auth-Secret': secret
       }
     }
 })
