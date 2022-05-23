@@ -47,8 +47,8 @@ export const checkServer = (userId: string, guild_id: string, router: NextRouter
   })
 )
 
-export const getNotifications = (guildId: string): Promise<NotificationsData[]> => (
-  api.get(`/servers/${guildId}/notifications`).then(res => res.data)
+export const getNotifications = (guildId: string, backend?: boolean): Promise<NotificationsData[]> => (
+  api.get(`/servers/${guildId}/notifications`, backend && {headers: {origin: production ? "https://app.yamabot.tk" : "http://localhost:3000"}}).then(res => res.data)
 )
 
 export const getNotification = (guildId: string, notificationId: string): Promise<Notification> => (

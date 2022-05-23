@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
 
     const queryClient = new QueryClient()
 
-    await queryClient.prefetchQuery(["notifications", id], () => getNotifications(id))
+    await queryClient.prefetchQuery(["notifications", id], () => getNotifications(id, true))
 
     return {
         props: {
