@@ -19,7 +19,7 @@ export interface DiscordRole {
 
 export interface GuildData {
     roles: DiscordRole[],
-    channels: Omit<DiscordChannel, "type">[]
+    channels: Omit<DiscordChannel, 'type'>[]
 }
 
 export interface Server {

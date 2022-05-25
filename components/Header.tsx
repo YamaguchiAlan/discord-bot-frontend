@@ -1,5 +1,5 @@
-import React, {Dispatch, useState} from 'react'
-import {userLogout} from '../endpoints/endpoints'
+import { Dispatch, useState, FC } from 'react'
+import { userLogout } from '../endpoints/endpoints'
 import LogoIcon from '../public/Logo.svg'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -11,12 +11,12 @@ interface Props extends UserState{
     dispatch: Dispatch<UserActions>
 }
 
-const Header: React.FC<Props> = ({user, dispatch}) => {
-    const [menuOpen, setMenuOpen] = useState<boolean>(false)
+const Header: FC<Props> = ({ user, dispatch }) => {
+  const [menuOpen, setMenuOpen] = useState<boolean>(false)
 
-    const router = useRouter()
+  const router = useRouter()
 
-    return (
+  return (
         <div id="header">
             <Link href="/">
                 <div className="logo">
@@ -60,7 +60,7 @@ const Header: React.FC<Props> = ({user, dispatch}) => {
                 }
             </div>
         </div>
-    )
+  )
 }
 
 export default Header

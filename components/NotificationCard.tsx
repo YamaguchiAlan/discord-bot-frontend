@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import EditIcon from '../public/Edit.svg'
@@ -11,11 +11,11 @@ interface Props {
     onRemoveClick: (notificationId: string) => void
 }
 
-const NotificationCard: React.FC<Props> = ({data, guild_id, onRemoveClick}) => {
-    return (
+const NotificationCard: FC<Props> = ({ data, guild_id, onRemoveClick }) => {
+  return (
     <>
         {data.map(notification => (
-            <div className="notifications-card"  key={notification._id}>
+            <div className="notifications-card" key={notification._id}>
                 <div className="card-header">
                     <div className="left">
                         <Image
@@ -61,7 +61,7 @@ const NotificationCard: React.FC<Props> = ({data, guild_id, onRemoveClick}) => {
             </div>
         ))}
     </>
-    )
+  )
 }
 
 export default NotificationCard

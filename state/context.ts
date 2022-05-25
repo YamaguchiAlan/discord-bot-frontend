@@ -1,6 +1,6 @@
-import { createContext, Dispatch } from "react"
-import { UserActions } from "./actions"
-import { UserState, initialUserState } from "./reducer"
+import { createContext, Dispatch } from 'react'
+import { UserActions } from './actions'
+import { UserState, initialUserState } from './reducer'
 
 export interface UserContextType {
     state: UserState;
@@ -8,6 +8,6 @@ export interface UserContextType {
 }
 
 export const UserContext = createContext<UserContextType>({
-    state: initialUserState,
-    dispatch: () => undefined
+  state: initialUserState,
+  dispatch: () => undefined
 })

@@ -1,15 +1,15 @@
-import React from 'react'
+import { FC } from 'react'
 import closeIcon from '../public/Close.svg'
 import Image from 'next/image'
-import {CopyToClipboard} from 'react-copy-to-clipboard'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 import toast from 'react-hot-toast'
 
 interface Props {
     setIsOpen: (state: boolean) => void
 }
 
-const VariablesModal: React.FC<Props> = ({setIsOpen}) => {
-    return (
+const VariablesModal: FC<Props> = ({ setIsOpen }) => {
+  return (
         <div className="modal-table">
             <div className="close">
                 <Image
@@ -56,27 +56,27 @@ const VariablesModal: React.FC<Props> = ({setIsOpen}) => {
                     <div className="column variable-column">
                         <div className="table-header"><span>Variable</span></div>
                         <CopyToClipboard text={'{game}'}
-                            onCopy={() => toast.success("Copied to clipboard!")}
+                            onCopy={() => toast.success('Copied to clipboard!')}
                         >
                             <div><span>{'{game}'}</span></div>
                         </CopyToClipboard>
                         <CopyToClipboard text={'{name}'}
-                            onCopy={() => toast.success("Copied to clipboard!")}
+                            onCopy={() => toast.success('Copied to clipboard!')}
                         >
                             <div><span>{'{name}'}</span></div>
                         </CopyToClipboard>
                         <CopyToClipboard text={'{title}'}
-                            onCopy={() => toast.success("Copied to clipboard!")}
+                            onCopy={() => toast.success('Copied to clipboard!')}
                         >
                             <div><span>{'{title}'}</span></div>
                         </CopyToClipboard>
                         <CopyToClipboard text={'{viewers}'}
-                            onCopy={() => toast.success("Copied to clipboard!")}
+                            onCopy={() => toast.success('Copied to clipboard!')}
                         >
                             <div><span>{'{viewers}'}</span></div>
                         </CopyToClipboard>
                         <CopyToClipboard text={'{url}'}
-                            onCopy={() => toast.success("Copied to clipboard!")}
+                            onCopy={() => toast.success('Copied to clipboard!')}
                         >
                             <div><span>{'{url}'}</span></div>
                         </CopyToClipboard>
@@ -92,7 +92,7 @@ const VariablesModal: React.FC<Props> = ({setIsOpen}) => {
                 </div>
             </div>
         </div>
-    )
+  )
 }
 
 export default VariablesModal

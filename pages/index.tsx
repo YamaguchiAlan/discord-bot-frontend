@@ -1,7 +1,7 @@
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, FC } from 'react'
 import { useQuery } from 'react-query'
-import {getServers} from '../endpoints/endpoints'
+import { getServers } from '../endpoints/endpoints'
 import withAuthenticate from '../components/HOC-withAuthenticate'
 import SearchBar from '../components/SearchBar'
 import Loader from '../components/Loader'
@@ -11,15 +11,15 @@ import { DiscordGuild } from '../types'
 
 const production = process.env.NEXT_PUBLIC_PRODUCTION
 
-const Home: React.FC = () => {
-  const {data, isLoading, isError} = useQuery(['servers'], () => getServers())
+const Home: FC = () => {
+  const { data, isLoading, isError } = useQuery(['servers'], () => getServers())
 
   const [myServers, setMyServers] = useState<DiscordGuild[]>([])
   const [filteredServers, setFilteredServers] = useState<DiscordGuild[]>([])
-  const [filter, setFilter] = useState<string>("")
+  const [filter, setFilter] = useState<string>('')
 
   useEffect(() => {
-    if(data){
+    if (data) {
       setMyServers(data)
     }
   }, [data])
@@ -29,12 +29,12 @@ const Home: React.FC = () => {
     setFilteredServers(filterServers)
   }, [filter])
 
-  if(isLoading){
+  if (isLoading) {
     return <Loader/>
   }
 
-  if(isError){
-    toast.error("An error has occurred")
+  if (isError) {
+    toast.error('An error has occurred')
   }
 
   return (
@@ -47,7 +47,7 @@ const Home: React.FC = () => {
         <div className="main-header">
           <p>Select a server to add or manage the bot.</p>
           <p>Or invite YamaBot to your server <a
-            href={`https://discord.com/oauth2/authorize?client_id=880599706428928100&permissions=271764480&redirect_uri=${production ? "https%3A%2F%2Fapp.yamabot.tk" : "http%3A%2F%2Flocalhost%3A3000"}&response_type=code&scope=bot`}
+            href={`https://discord.com/oauth2/authorize?client_id=880599706428928100&permissions=271764480&redirect_uri=${production ? 'https%3A%2F%2Fapp.yamabot.tk' : 'http%3A%2F%2Flocalhost%3A3000'}&response_type=code&scope=bot`}
               >here.
             </a>
           </p>
@@ -55,7 +55,7 @@ const Home: React.FC = () => {
         <div className="body-default-card">
           <div className="header">
               <h3>My servers</h3>
-              <h4>{myServers[0] ? myServers.length : "0"}</h4>
+              <h4>{myServers[0] ? myServers.length : '0'}</h4>
           </div>
 
           <div className="searchbar">
@@ -64,18 +64,15 @@ const Home: React.FC = () => {
 
           <div className="main-body">
           {
-            myServers[0] ?
-              filter ?
-                filteredServers[0] ?
-                  <ServerCard data={filteredServers}/>
-                :
-                  <div className="empty-servers">
+            myServers[0]
+              ? filter
+                ? filteredServers[0]
+                  ? <ServerCard data={filteredServers}/>
+                  : <div className="empty-servers">
                       No results found
                   </div>
-              :
-                <ServerCard data={myServers}/>
-              :
-                <div className="empty-servers">
+                : <ServerCard data={myServers}/>
+              : <div className="empty-servers">
                     Looks like you don&apos;t have a Discord server yet. <br />
                     Create one so you can add the bot!
                 </div>

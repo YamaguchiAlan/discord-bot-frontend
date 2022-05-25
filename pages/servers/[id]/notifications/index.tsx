@@ -1,20 +1,20 @@
-import { useEffect, useContext, useState } from "react"
-import {GetServerSideProps} from 'next'
-import api, {checkServer, getNotifications} from '../../../../endpoints/endpoints'
-import {UserContext} from '../../../../state/context'
+import { useEffect, useContext, useState, FC } from 'react'
+import { GetServerSideProps } from 'next'
+import api, { checkServer, getNotifications } from '../../../../endpoints/endpoints'
+import { UserContext } from '../../../../state/context'
 import { QueryClient, useQuery } from 'react-query'
 import { dehydrate, DehydratedState } from 'react-query/hydration'
-import WithAuthenticate from "../../../../components/HOC-withAuthenticate"
+import WithAuthenticate from '../../../../components/HOC-withAuthenticate'
 import toast from 'react-hot-toast'
 import Image from 'next/image'
-import Head from "next/head"
-import Link from "next/link"
-import Loader from "../../../../components/Loader"
+import Head from 'next/head'
+import Link from 'next/link'
+import Loader from '../../../../components/Loader'
 import Modal from 'react-modal'
-import SearchBar from "../../../../components/SearchBar"
-import NotificationCard from "../../../../components/NotificationCard"
-import { NextRouter } from "next/router"
-import { NotificationsData, ServerData } from "../../../../types"
+import SearchBar from '../../../../components/SearchBar'
+import NotificationCard from '../../../../components/NotificationCard'
+import { NextRouter } from 'next/router'
+import { NotificationsData, ServerData } from '../../../../types'
 
 interface Props {
     guild_id: string,
@@ -27,69 +27,73 @@ interface Query{
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
-    const {id}: Query = context.query
-    Modal.setAppElement("#app");
+  const { id }: Query = context.query
+  Modal.setAppElement('#app')
 
-    const queryClient = new QueryClient()
+  const queryClient = new QueryClient()
 
-    await queryClient.prefetchQuery(["notifications", id], () => getNotifications(id, true))
+  await queryClient.prefetchQuery(['notifications', id], () => getNotifications(id, true))
 
-    return {
-        props: {
-            guild_id: id,
-            dehydratedState: dehydrate(queryClient)
-        }
+  return {
+    props: {
+      guild_id: id,
+      dehydratedState: dehydrate(queryClient)
     }
+  }
 }
 
-const MyServer: React.FC<Props> = (props) => {
-    const {state} = useContext(UserContext)
-    const [server, setServer] = useState<ServerData>(null)
-    const [isOpen, setIsOpen] = useState<boolean>(false)
-    const [selectedNotification, setSelectedNotification] = useState<string>(null)
-    const [filter, setFilter] = useState<string>("")
-    const [filteredNotifications, setFilteredNotifications] = useState<NotificationsData[]>([])
-    const {data, isLoading, isError, refetch} = useQuery(["notifications", props.guild_id], () => getNotifications(props.guild_id))
+const MyServer: FC<Props> = (props) => {
+  const { state } = useContext(UserContext)
+  const [server, setServer] = useState<ServerData>(null)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [selectedNotification, setSelectedNotification] = useState<string>(null)
+  const [filter, setFilter] = useState<string>('')
+  const [filteredNotifications, setFilteredNotifications] = useState<NotificationsData[]>([])
+  const { data, isLoading, isError, refetch } = useQuery(['notifications', props.guild_id], () => getNotifications(props.guild_id))
 
-    const router = props.router
+  const router = props.router
 
-    useEffect(() => {
-        async function effect() {
-            if(props.guild_id && state.user.user_id){
-                const res = await checkServer(state.user?._id, props.guild_id, router)
-                setServer(res)
-            }
-        }
-        effect()
-      }, [props.guild_id, state.user])
-
-    useEffect(() => {
-        if(data){
-            const filterNotifications = data.filter(n => n.twitchUsername.toLowerCase().includes(filter.toLowerCase()))
-            setFilteredNotifications(filterNotifications)
-        }
-    }, [filter])
-
-    const onRemoveClick = (notificationId: string): void => {
-        setSelectedNotification(notificationId)
-        setIsOpen(true)
+  useEffect(() => {
+    async function effect () {
+      if (props.guild_id && state.user.user_id) {
+        const res = await checkServer(state.user?._id, props.guild_id, router)
+        setServer(res)
+      }
     }
+    effect()
+  }, [props.guild_id, state.user])
 
-    const removeNotification = async () => {
-        try {
-            await api.delete(`/servers/${props.guild_id}/notifications/${selectedNotification}`)
-            setSelectedNotification(null)
-            setIsOpen(false)
-            await refetch()
-            toast.success("Notification Removed")
-        } catch (error) {
-            toast.error("Something Went Wrong!")
-        }
+  useEffect(() => {
+    if (data) {
+      const filterNotifications = data.filter(n => n.twitchUsername.toLowerCase().includes(filter.toLowerCase()))
+      setFilteredNotifications(filterNotifications)
     }
+  }, [filter])
 
-    if(isLoading || !server) return <Loader/>;
+  const onRemoveClick = (notificationId: string): void => {
+    setSelectedNotification(notificationId)
+    setIsOpen(true)
+  }
 
-    return (
+  const removeNotification = async () => {
+    try {
+      await api.delete(`/servers/${props.guild_id}/notifications/${selectedNotification}`)
+      setSelectedNotification(null)
+      setIsOpen(false)
+      await refetch()
+      toast.success('Notification Removed')
+    } catch (error) {
+      toast.error('Something Went Wrong!')
+    }
+  }
+
+  if (isLoading || !server) return <Loader/>
+
+  if (isError) {
+    toast.error('Something Went Wrong!')
+  }
+
+  return (
         <>
             <Head>
                 <title>{server.server_name}</title>
@@ -98,15 +102,14 @@ const MyServer: React.FC<Props> = (props) => {
                 <div className="main">
                 <div className="server-header">
                     <div className="discord-icon">
-                        {server.icon ?
-                            <Image
+                        {server.icon
+                          ? <Image
                                 src={`https://cdn.discordapp.com/icons/${server.server_id}/${server.icon}.webp?size=100`}
                                 height="50"
                                 width="50"
                                 alt="icon"
                             />
-                        :
-                            <span>{server.server_name.slice(0, 1)}</span>
+                          : <span>{server.server_name.slice(0, 1)}</span>
                         }
                     </div>
 
@@ -118,7 +121,7 @@ const MyServer: React.FC<Props> = (props) => {
                 <div className="server-notifications body-default-card">
                     <div className="header">
                         <h3>Notifications</h3>
-                        <h4>{data ? data?.length : "0"}/20</h4>
+                        <h4>{data ? data?.length : '0'}/20</h4>
                     </div>
 
                     <div className="searchbar">
@@ -126,18 +129,15 @@ const MyServer: React.FC<Props> = (props) => {
                     </div>
 
                     <div className="body">
-                    { data ?
-                        filter ?
-                            filteredNotifications[0] ?
-                                <NotificationCard data={filteredNotifications} guild_id={props.guild_id} onRemoveClick={onRemoveClick}/>
-                            :
-                                <div className="empty-notifications">
+                    { data
+                      ? filter
+                        ? filteredNotifications[0]
+                          ? <NotificationCard data={filteredNotifications} guild_id={props.guild_id} onRemoveClick={onRemoveClick}/>
+                          : <div className="empty-notifications">
                                     No results found
                                 </div>
-                        :
-                            <NotificationCard data={data} guild_id={props.guild_id} onRemoveClick={onRemoveClick}/>
-                        :
-                            <div className="empty-notifications">
+                        : <NotificationCard data={data} guild_id={props.guild_id} onRemoveClick={onRemoveClick}/>
+                      : <div className="empty-notifications">
                                 No notifications yet.<br/>
                                 Create a new notification in your server now!
                             </div>
@@ -160,7 +160,7 @@ const MyServer: React.FC<Props> = (props) => {
                 </div>
             </div>
         </>
-    )
+  )
 }
 
 export default WithAuthenticate(MyServer)

@@ -1,4 +1,5 @@
-import {UserState} from './reducer'
+/* eslint-disable no-unused-vars */
+import { UserState } from './reducer'
 
 export enum ActionType {
     SetUSer,

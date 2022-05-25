@@ -1,11 +1,11 @@
-import React, {useState, useRef, useContext, useEffect} from 'react'
+import { useState, useRef, useContext, useEffect, FC, FormEvent } from 'react'
 import { UserContext } from '../../../../../state/context'
-import WithAuthenticate from "../../../../../components/HOC-withAuthenticate"
-import Image from "next/image"
-import Head from "next/head"
-import { DehydratedState, QueryClient, useQuery } from 'react-query'
-import { dehydrate } from 'react-query/hydration'
-import api, {getGuildData, checkServer} from '../../../../../endpoints/endpoints'
+import WithAuthenticate from '../../../../../components/HOC-withAuthenticate'
+import Image from 'next/image'
+import Head from 'next/head'
+import { QueryClient, useQuery } from 'react-query'
+import { dehydrate, DehydratedState } from 'react-query/hydration'
+import api, { getGuildData, checkServer } from '../../../../../endpoints/endpoints'
 import Select from 'react-select'
 import toast from 'react-hot-toast'
 import Modal from 'react-modal'
@@ -26,95 +26,99 @@ interface Query{
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
-    const {id}: Query = context.query
-    Modal.setAppElement("#app");
+  const { id }: Query = context.query
+  Modal.setAppElement('#app')
 
-    const queryClient = new QueryClient()
+  const queryClient = new QueryClient()
 
-    await queryClient.prefetchQuery(['new-notification', id], () => getGuildData(id, true))
+  await queryClient.prefetchQuery(['new-notification', id], () => getGuildData(id, true))
 
-    return {
-        props: {
-            guild_id: id,
-            dehydratedState: dehydrate(queryClient)
-        }
+  return {
+    props: {
+      guild_id: id,
+      dehydratedState: dehydrate(queryClient)
     }
+  }
 }
 
-const AddNotification: React.FC<Props> = ({guild_id, router}) => {
-    const {state} = useContext(UserContext)
-    const [role, setRole] = useState<SelectRoleOption>({value: "@everyone", label: "@everyone"})
-    const [server, setServer] = useState<ServerData>(null)
-    const [isOpen, setIsOpen] = useState<boolean>(false)
-    const [channel, setChannel] = useState<SelectChannelOption>(null)
-    const usernameRef = useRef<HTMLInputElement>(null)
-    const messageRef = useRef<HTMLTextAreaElement>(null)
+const AddNotification: FC<Props> = ({ guild_id, router }) => {
+  const { state } = useContext(UserContext)
+  const [role, setRole] = useState<SelectRoleOption>({ value: '@everyone', label: '@everyone' })
+  const [server, setServer] = useState<ServerData>(null)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [channel, setChannel] = useState<SelectChannelOption>(null)
+  const usernameRef = useRef<HTMLInputElement>(null)
+  const messageRef = useRef<HTMLTextAreaElement>(null)
 
-    useEffect(() => {
-        async function effect() {
-            if(guild_id && state.user.user_id){
-                const res = await checkServer(state.user._id, guild_id, router)
-                setServer(res)
-            }
-        }
-        effect()
-    }, [guild_id, state.user])
+  useEffect(() => {
+    async function effect () {
+      if (guild_id && state.user.user_id) {
+        const res = await checkServer(state.user._id, guild_id, router)
+        setServer(res)
+      }
+    }
+    effect()
+  }, [guild_id, state.user])
 
-    const {data, isLoading, isError} = useQuery(['new-notification', guild_id], () => getGuildData(guild_id))
+  const { data, isLoading, isError } = useQuery(['new-notification', guild_id], () => getGuildData(guild_id))
 
-    const roleOptions: SelectRoleOption[] = data?.roles.filter(r => r.name !== "@everyone").map(r => ({
-        value: `<@&${r.id}>`, label: r.name
-    }))
+  const roleOptions: SelectRoleOption[] = data?.roles.filter(r => r.name !== '@everyone').map(r => ({
+    value: `<@&${r.id}>`, label: r.name
+  }))
 
-    const channelOptions: SelectChannelOption[] = data?.channels.map(c => ({
-        value: {id: c.id, name: c.name}, label: `#${c.name}`
-    }))
+  const channelOptions: SelectChannelOption[] = data?.channels.map(c => ({
+    value: { id: c.id, name: c.name }, label: `#${c.name}`
+  }))
 
-    const submit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
 
-        const addButton = (document.getElementById("add-button") as HTMLButtonElement)
-        addButton.disabled = true
+    const addButton = (document.getElementById('add-button') as HTMLButtonElement)
+    addButton.disabled = true
 
-        const newNotification = {
-            userId: state.user.user_id,
-            username: usernameRef.current.value,
-            channel: channel.value.id,
-            channelName: channel.value.name,
-            message: messageRef.current.value
-        }
-
-        try {
-            await api.post(`/servers/${guild_id}/notifications`, newNotification)
-            router.push(`/servers/${guild_id}/notifications`)
-        } catch (err) {
-            if(err.status === 404){
-                toast.error("Incorrect Username")
-                usernameRef.current.classList.add("error")
-            } else{
-                toast.error("Something Went Wrong!")
-            }
-        }
-        addButton.disabled = false
+    const newNotification = {
+      userId: state.user.user_id,
+      username: usernameRef.current.value,
+      channel: channel.value.id,
+      channelName: channel.value.name,
+      message: messageRef.current.value
     }
 
-    const insertMention = () => {
-        const textarea = messageRef.current
-
-        if (textarea.selectionStart || textarea.selectionStart === 0) {
-            var startPos = textarea.selectionStart;
-            var endPos = textarea.selectionEnd;
-            textarea.value = textarea.value.substring(0, startPos)
-                + role.value
-                + textarea.value.substring(endPos, textarea.value.length);
-        } else {
-            textarea.value += role.value;
-        }
+    try {
+      await api.post(`/servers/${guild_id}/notifications`, newNotification)
+      router.push(`/servers/${guild_id}/notifications`)
+    } catch (err) {
+      if (err.status === 404) {
+        toast.error('Incorrect Username')
+        usernameRef.current.classList.add('error')
+      } else {
+        toast.error('Something Went Wrong!')
+      }
     }
+    addButton.disabled = false
+  }
 
-    if(isLoading || !server) return <Loader/>;
+  const insertMention = () => {
+    const textarea = messageRef.current
 
-    return(
+    if (textarea.selectionStart || textarea.selectionStart === 0) {
+      const startPos = textarea.selectionStart
+      const endPos = textarea.selectionEnd
+      textarea.value = textarea.value.substring(0, startPos) +
+                role.value +
+                textarea.value.substring(endPos, textarea.value.length)
+    } else {
+      textarea.value += role.value
+    }
+  }
+
+  if (isLoading || !server) return <Loader/>
+
+  if (isError) {
+    toast.error('Something Went Wrong!')
+  }
+
+  return (
         <>
         <Head>
             <title>Add Notification</title>
@@ -123,15 +127,14 @@ const AddNotification: React.FC<Props> = ({guild_id, router}) => {
             <div className="main">
                 <div className="server-header">
                     <div className="discord-icon">
-                    {server.icon ?
-                        <Image
+                    {server.icon
+                      ? <Image
                             src={`https://cdn.discordapp.com/icons/${server.server_id}/${server.icon}.webp?size=100`}
                             height="50"
                             width="50"
                             alt="icon"
                         />
-                    :
-                        <span>{server.server_name.slice(0, 1)}</span>
+                      : <span>{server.server_name.slice(0, 1)}</span>
                     }
                     </div>
                     <span className="server-name">{server.server_name}</span>
@@ -152,7 +155,7 @@ const AddNotification: React.FC<Props> = ({guild_id, router}) => {
                                 placeholder="Username"
                                 ref={usernameRef}
                                 required
-                                onChange={(e) => e.target.classList.remove("error")}
+                                onChange={(e) => e.target.classList.remove('error')}
                             />
 
                             <label className="notification-label">Channel</label>
@@ -178,9 +181,9 @@ const AddNotification: React.FC<Props> = ({guild_id, router}) => {
                                         value={role}
                                         onChange={(option) => setRole(option)}
                                         options={[
-                                            {label: "@everyone", value: "@everyone"},
-                                            {label: "@here", value: "@here"},
-                                            ...roleOptions
+                                          { label: '@everyone', value: '@everyone' },
+                                          { label: '@here', value: '@here' },
+                                          ...roleOptions
                                         ]}
                                         name="role"
                                         className="select-container"
@@ -208,7 +211,7 @@ const AddNotification: React.FC<Props> = ({guild_id, router}) => {
             </div>
         </div>
         </>
-    )
+  )
 }
 
 export default WithAuthenticate(AddNotification)
