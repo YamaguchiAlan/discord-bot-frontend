@@ -9,11 +9,16 @@ import api, { getGuildData, checkServer, getNotification } from '../../../../../
 import Select from 'react-select'
 import toast from 'react-hot-toast'
 import Modal from 'react-modal'
+import Toggle from 'react-toggle'
 import Loader from '../../../../../components/Loader'
 import VariablesModal from '../../../../../components/VariablesModal'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import { NextRouter } from 'next/router'
 import { GetServerSideProps } from 'next'
 import { ServerData, SelectRoleOption, SelectChannelOption } from '../../../../../types'
+import ColorPicker from '../../../../../components/ColorPicker'
+import Link from 'next/link'
 
 interface Props {
     guild_id: string,
@@ -51,7 +56,12 @@ const EditNotification: FC<Props> = ({ guild_id, notificationId, router }) => {
   const [server, setServer] = useState<ServerData>(null)
   const [channel, setChannel] = useState<SelectChannelOption>(null)
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [embedMessage, setEmbedMessage] = useState<boolean>(true)
+  const [previewImage, setPreviewImage] = useState<boolean>(true)
+  const [embedColor, setEmbedColor] = useState<string>('#0ec9a6')
   const messageRef = useRef<HTMLTextAreaElement>(null)
+  const titleRef = useRef<HTMLInputElement>(null)
+  const descriptionRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     async function effect () {
@@ -74,6 +84,13 @@ const EditNotification: FC<Props> = ({ guild_id, notificationId, router }) => {
         },
         label: `#${notification.channelName}`
       })
+      console.log(notification)
+      setEmbedMessage(notification.embedMessage)
+
+      if (notification.embed) {
+        setEmbedColor(notification.embed.color)
+        setPreviewImage(notification.embed.previewImage)
+      }
     }
   }, [notification])
 
@@ -96,7 +113,16 @@ const EditNotification: FC<Props> = ({ guild_id, notificationId, router }) => {
     const newNotification = {
       channel: channel.value.id,
       channelName: channel.value.name,
-      message: messageRef.current.value
+      message: messageRef.current.value,
+      embedMessage,
+      embed: embedMessage
+        ? {
+            title: titleRef.current.value,
+            description: descriptionRef.current.value,
+            color: embedColor,
+            previewImage
+          }
+        : null
     }
 
     try {
@@ -131,7 +157,7 @@ const EditNotification: FC<Props> = ({ guild_id, notificationId, router }) => {
   return (
         <>
         <Head>
-            <title>Edit Notification</title>
+            <title>{server.server_name} - Edit Notification | YamaBot</title>
         </Head>
         <div className="grid-container">
             <div className="main">
@@ -147,7 +173,13 @@ const EditNotification: FC<Props> = ({ guild_id, notificationId, router }) => {
                       : <span>{server.server_name.slice(0, 1)}</span>
                     }
                     </div>
-                    <span className="server-name">{server.server_name}</span>
+                    <span className="server-name">
+                      <Link href={`/servers/${guild_id}/notifications`}>
+                          {server.server_name}
+                        </Link>
+                        <FontAwesomeIcon icon={faAngleRight} size="xs" style={{ color: '#0ec9a6' }}/>
+                        <span>Edit Notification</span>
+                    </span>
                 </div>
                 <div className="body-default-card">
                     <div className="header">
@@ -201,6 +233,58 @@ const EditNotification: FC<Props> = ({ guild_id, notificationId, router }) => {
                                     <button className="mention-button" type="button" onClick={insertMention}>Insert Mention</button>
                                 </div>
                                 <textarea name="message" id="message" placeholder="Message" ref={messageRef} defaultValue={notification.message} required></textarea>
+                            </div>
+
+                            <div className='toggle-container'>
+                              <strong>Embed Message</strong>
+                              <Toggle
+                                icons={false}
+                                checked={embedMessage}
+                                onChange={(e) => setEmbedMessage(e.target.checked)}
+                              />
+                            </div>
+
+                            <div className={`embeb-config ${!embedMessage && '--hide'}`}>
+                              <span className="input-helper">You can use Discord markdown and variables. Click <span className='link' onClick={() => setIsOpen(true)}>here</span> to see the formatting table.</span>
+                              <label className="notification-label">Embed Title</label>
+                              <input
+                                  autoComplete="off"
+                                  name="title"
+                                  id="title"
+                                  type="text"
+                                  placeholder="Embed Title"
+                                  ref={titleRef}
+                                  defaultValue={notification.embed?.title ? notification.embed?.title : '{title}'}
+                                  required
+                                  disabled={!embedMessage}
+                              />
+
+                              <label className="notification-label">Embed Description</label>
+                              <input
+                                  autoComplete="off"
+                                  name="description"
+                                  id="description"
+                                  type="text"
+                                  placeholder="Embed Description"
+                                  ref={descriptionRef}
+                                  defaultValue={notification.embed?.description ? notification.embed?.description : 'Playing {game}'}
+                                  required
+                                  disabled={!embedMessage}
+                              />
+
+                              <div className="color-picker-container">
+                                <strong>Embed Color</strong>
+                                <ColorPicker value={embedColor} setValue={setEmbedColor}/>
+                              </div>
+
+                              <div className='toggle-container'>
+                                <strong>Preview Image</strong>
+                                <Toggle
+                                  icons={false}
+                                  checked={previewImage}
+                                  onChange={(e) => setPreviewImage(e.target.checked)}
+                                />
+                              </div>
                             </div>
 
                             <div className="notification-buttons">

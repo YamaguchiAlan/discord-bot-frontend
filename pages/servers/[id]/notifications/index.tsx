@@ -96,7 +96,7 @@ const MyServer: FC<Props> = (props) => {
   return (
         <>
             <Head>
-                <title>{server.server_name}</title>
+                <title>{server.server_name} | YamaBot</title>
             </Head>
             <div className="grid-container">
                 <div className="main">

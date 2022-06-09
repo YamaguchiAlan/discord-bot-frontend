@@ -55,6 +55,9 @@ const Header: FC<Props> = ({ user, dispatch }) => {
                                     <span className="discriminator">#{user.discriminator}</span>
                                 </div>
                             </div>
+                            <Link href="/">
+                                <span className='item'>Servers</span>
+                            </Link>
                             <span className='log-out item' onClick={() => userLogout(dispatch, router)}>Log out</span>
                         </div>
                 }

@@ -41,6 +41,13 @@ export interface Notification {
     channel: string,
     channelName: string,
     message: string,
+    embedMessage: boolean,
+    embed?: {
+        title: string,
+        description: string,
+        color: string,
+        previewImage: boolean
+    },
     _id?: string
 }
 

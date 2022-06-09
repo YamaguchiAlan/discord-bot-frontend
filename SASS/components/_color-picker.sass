@@ -1,0 +1,42 @@
+.color-picker
+    & .container
+        display: flex
+        justify-content: flex-end
+        align-items: center
+
+        & span
+            color: $font-color-secondary
+            font-family: 'Space Mono', monospace
+
+    & .color
+        position: relative
+        margin-left: 12px
+        border: 1px solid #919191
+
+        & .inner
+            width: 24px
+            height: 24px
+            cursor: pointer
+
+    & .popover
+        position: absolute
+        z-index: 2
+        width: 100%
+        left: 0
+        display: flex
+        justify-content: center
+
+    & .cover
+        position: fixed
+        top: 0px
+        right: 0px
+        bottom: 0px
+        left: 0px
+
+    & .chrome-picker
+        transform: translateY(-100%)
+        position: absolute
+
+@media (min-width: 768px)
+    .color-picker .desktop .popover
+        display: initial

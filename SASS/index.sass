@@ -6,10 +6,8 @@
 @import "./components/_header"
 @import "./components/_notification"
 @import "./components/_variablesModal"
-
-@import "./fontawesome/fontawesome.scss"
-@import "./fontawesome/solid.scss"
-
+@import "./components/_toggle"
+@import "./components/_color-picker"
 
 *
     box-sizing: border-box
@@ -119,8 +117,16 @@ body
     100%
         transform: rotate(360deg)
 
+.desktop
+    display: none
 
 @media only screen and (min-width: 768px)
+    .desktop
+        display: block
+
+    .mobile
+        display: none
+
     .body-default-card
         padding: 1rem 0.7rem
 
