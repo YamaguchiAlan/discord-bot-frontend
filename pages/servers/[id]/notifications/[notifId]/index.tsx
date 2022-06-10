@@ -58,6 +58,7 @@ const EditNotification: FC<Props> = ({ guild_id, notificationId, router }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [embedMessage, setEmbedMessage] = useState<boolean>(true)
   const [previewImage, setPreviewImage] = useState<boolean>(true)
+  const [titleAsUrl, setTitleAsUrl] = useState<boolean>(true)
   const [embedColor, setEmbedColor] = useState<string>('#0ec9a6')
   const messageRef = useRef<HTMLTextAreaElement>(null)
   const titleRef = useRef<HTMLInputElement>(null)
@@ -90,6 +91,7 @@ const EditNotification: FC<Props> = ({ guild_id, notificationId, router }) => {
       if (notification.embed) {
         setEmbedColor(notification.embed.color)
         setPreviewImage(notification.embed.previewImage)
+        setTitleAsUrl(notification.embed.titleAsUrl)
       }
     }
   }, [notification])
@@ -118,6 +120,7 @@ const EditNotification: FC<Props> = ({ guild_id, notificationId, router }) => {
       embed: embedMessage
         ? {
             title: titleRef.current.value,
+            titleAsUrl,
             description: descriptionRef.current.value,
             color: embedColor,
             previewImage
@@ -258,6 +261,15 @@ const EditNotification: FC<Props> = ({ guild_id, notificationId, router }) => {
                                   required
                                   disabled={!embedMessage}
                               />
+
+                              <div className='toggle-container m-0 mb-2 ml-1'>
+                                <strong>Title as stream URL</strong>
+                                <Toggle
+                                  icons={false}
+                                  checked={titleAsUrl}
+                                  onChange={(e) => setTitleAsUrl(e.target.checked)}
+                                />
+                              </div>
 
                               <label className="notification-label">Embed Description</label>
                               <input

@@ -44,6 +44,7 @@ export interface Notification {
     embedMessage: boolean,
     embed?: {
         title: string,
+        titleAsUrl: boolean,
         description: string,
         color: string,
         previewImage: boolean

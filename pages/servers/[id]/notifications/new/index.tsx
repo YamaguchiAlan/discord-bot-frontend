@@ -54,6 +54,7 @@ const AddNotification: FC<Props> = ({ guild_id, router }) => {
   const [channel, setChannel] = useState<SelectChannelOption>(null)
   const [embedMessage, setEmbedMessage] = useState<boolean>(true)
   const [previewImage, setPreviewImage] = useState<boolean>(true)
+  const [titleAsUrl, setTitleAsUrl] = useState<boolean>(true)
   const [embedColor, setEmbedColor] = useState<string>('#0ec9a6')
   const usernameRef = useRef<HTMLInputElement>(null)
   const messageRef = useRef<HTMLTextAreaElement>(null)
@@ -96,6 +97,7 @@ const AddNotification: FC<Props> = ({ guild_id, router }) => {
       embed: embedMessage
         ? {
             title: titleRef.current.value,
+            titleAsUrl,
             description: descriptionRef.current.value,
             color: embedColor,
             previewImage
@@ -243,6 +245,15 @@ const AddNotification: FC<Props> = ({ guild_id, router }) => {
                                   required
                                   disabled={!embedMessage}
                               />
+
+                              <div className='toggle-container m-0 mb-2 ml-1'>
+                                <strong>Title as stream URL</strong>
+                                <Toggle
+                                  icons={false}
+                                  checked={titleAsUrl}
+                                  onChange={(e) => setTitleAsUrl(e.target.checked)}
+                                />
+                              </div>
 
                               <label className="notification-label">Embed Description</label>
                               <input
