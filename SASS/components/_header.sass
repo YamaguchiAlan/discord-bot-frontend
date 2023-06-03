@@ -2,61 +2,64 @@
 
 #header
     display: flex
-    align-items: flex-end
+    align-items: center
     justify-content: space-between
-    padding: 0.5rem
-    background-color: $main-bg
+    padding: 12px
+    background-color: $black
     position: sticky
     top: 0
     z-index: 9
+    border-bottom: 2px solid $black-75
+    margin-bottom: 32px
+
 
     & .logo
         display: flex
-        align-items: flex-end
+        align-items: flex-start
         cursor: pointer
+        gap: 12px
 
         & img
-            height: 2.8rem
-            width: 2.8rem
+            height: 33px
+            width: 45px
 
         & span
-            margin: 0 0 3px 0.5rem
-            font-size: 1.7rem
-            font-weight: 500
+            @include H3
 
     & .menu
         & img
-            height: 2rem
-            width: 2rem
+            height: 40px
+            width: 40px
             border-radius: 50%
             cursor: pointer
 
         & .dropdown
+            @include paragraph
             display: flex
             flex-direction: column
             justify-content: flex-start
             position: absolute
-            right: 0.5rem
-            background: #171d1d
-            padding: 0.3rem
-            border-radius: 5px
-            font-size: $small-font
+            right: 12px
+            background: $bg-primary
+            padding: 4px
+            border-radius: 8px
             box-shadow: -4px 10px 24px 5px rgba(0,0,0,0.4)
 
             & .item
+                @include caption
                 cursor: pointer
-                padding: 0.3rem
-                border-radius: 5px
+                padding: 4px 8px
+                border-radius: 8px
 
                 &:hover
-                    background: rgba(158, 158, 158, 0.15)
+                    background: $input-bg
 
             & .log-out
-                color: red
+                color: $error
 
         & .user
             display: flex
-            padding: 0.3rem
+            padding: 8px
 
             & img
                 cursor: auto !important
@@ -64,12 +67,39 @@
             & .text
                 display: flex
                 flex-direction: column
-                margin-left: 5px
+                margin-left: 8px
+                height: 40px
 
                 & .discriminator
-                    font-size: $caption-font
-                    color: $font-color-secondary
+                    @include caption
+                    color: $font-secondary
 
 @media only screen and (min-width: 768px)
     #header
-        padding: 0.5rem 1rem
+        padding: 24px 64px
+        position: relative
+        margin-bottom: 64px
+
+        & .logo
+            gap: 16px
+
+            & img
+                height: 40px
+                width: 56px
+
+            & span
+                @include H2
+
+        & .menu
+            & img
+                height: 48px
+                width: 48px
+
+            & .dropdown
+                padding: 8px
+
+                & .item
+                    padding: 8px
+
+            & .user .text
+                    height: auto

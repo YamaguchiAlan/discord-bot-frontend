@@ -45,8 +45,8 @@ const Home: FC = () => {
       <div className="grid-container">
         <div className="main">
         <div className="main-header">
-          <p>Select a server to add or manage the bot.</p>
-          <p>Or invite YamaBot to your server <a
+          <p>Select a server to add or manage the bot. <br/>
+            Or invite YamaBot to your server <a
             href={`https://discord.com/oauth2/authorize?client_id=880599706428928100&permissions=271764480&redirect_uri=${production ? 'https%3A%2F%2Fapp.yamabot.tk' : 'http%3A%2F%2Flocalhost%3A3000'}&response_type=code&scope=bot`}
               >here.
             </a>
@@ -54,8 +54,8 @@ const Home: FC = () => {
         </div>
         <div className="body-default-card">
           <div className="header">
-              <h3>My servers</h3>
-              <h4>{myServers[0] ? myServers.length : '0'}</h4>
+              <h4>My servers</h4>
+              <h5>{myServers[0] ? myServers.length : '0'}</h5>
           </div>
 
           <div className="searchbar">

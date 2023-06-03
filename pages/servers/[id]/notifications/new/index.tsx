@@ -162,13 +162,14 @@ const AddNotification: FC<Props> = ({ guild_id, router }) => {
                       <Link href={`/servers/${guild_id}/notifications`}>
                         {server.server_name}
                       </Link>
-                      <FontAwesomeIcon icon={faAngleRight} size="xs" style={{ color: '#0ec9a6' }}/>
+                      <FontAwesomeIcon icon={faAngleRight} fontSize={22} style={{ color: '#1AEDC7' }}/>
                        <span>Add Notification</span>
                     </span>
                 </div>
                 <div className="body-default-card">
-                    <div className="header">
-                        <h3>Add Notification</h3>
+                    <div className="header notification-header">
+                        <h4>Add Notification</h4>
+                        <hr />
                     </div>
                     <div className="body">
                         <form className="notification-form" onSubmit={submit}>
@@ -223,7 +224,7 @@ const AddNotification: FC<Props> = ({ guild_id, router }) => {
                             </div>
 
                             <div className='toggle-container'>
-                              <strong>Embed Message</strong>
+                              <label className='notification-label'>Embed Message</label>
                               <Toggle
                                 icons={false}
                                 checked={embedMessage}
@@ -246,15 +247,6 @@ const AddNotification: FC<Props> = ({ guild_id, router }) => {
                                   disabled={!embedMessage}
                               />
 
-                              <div className='toggle-container m-0 mb-2 ml-1'>
-                                <strong>Title as stream URL</strong>
-                                <Toggle
-                                  icons={false}
-                                  checked={titleAsUrl}
-                                  onChange={(e) => setTitleAsUrl(e.target.checked)}
-                                />
-                              </div>
-
                               <label className="notification-label">Embed Description</label>
                               <input
                                   autoComplete="off"
@@ -269,12 +261,21 @@ const AddNotification: FC<Props> = ({ guild_id, router }) => {
                               />
 
                               <div className="color-picker-container">
-                                <strong>Embed Color</strong>
+                                <label className='notification-label'>Embed Color</label>
                                 <ColorPicker value={embedColor} setValue={setEmbedColor}/>
                               </div>
 
+                              <div className='toggle-container title-url'>
+                                <label className='notification-label'>Title as stream URL</label>
+                                <Toggle
+                                  icons={false}
+                                  checked={titleAsUrl}
+                                  onChange={(e) => setTitleAsUrl(e.target.checked)}
+                                />
+                              </div>
+
                               <div className='toggle-container'>
-                                <strong>Preview Image</strong>
+                                <label className='notification-label'>Preview Image</label>
                                 <Toggle
                                   icons={false}
                                   checked={previewImage}
@@ -284,8 +285,8 @@ const AddNotification: FC<Props> = ({ guild_id, router }) => {
                             </div>
 
                             <div className="notification-buttons">
-                                <button id="add-button" type="submit" className="add-button" disabled={!channel}>Add Notification</button>
                                 <button className="cancel-button" type="button" onClick={() => router.push(`/servers/${guild_id}/notifications`)}>Cancel</button>
+                                <button id="add-button" type="submit" className="add-button" disabled={!channel}>Add Notification</button>
                             </div>
                         </form>
                     </div>

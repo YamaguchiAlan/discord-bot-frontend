@@ -39,15 +39,15 @@ function MyApp ({ Component, pageProps }: AppProps) {
   const toastOpt: DefaultToastOptions = {
     success: {
       style: {
-        background: '#414141',
+        background: '#283340',
         border: '1px solid #00853c',
         color: '#eeeeee'
       }
     },
     error: {
       style: {
-        background: '#414141',
-        border: '1px solid red',
+        background: '#283340',
+        border: '1px solid #BF2C2C',
         color: '#eeeeee'
       }
     }

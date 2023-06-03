@@ -32,7 +32,7 @@ const Header: FC<Props> = ({ user, dispatch }) => {
             <div className="menu">
                 <Image
                     onClick={() => setMenuOpen(!menuOpen)}
-                    src={`https://cdn.discordapp.com/avatars/${user.user_id}/${user.avatar}.webp?size=100`}
+                    src={user.user_id ? `https://cdn.discordapp.com/avatars/${user.user_id}/${user.avatar}.webp?size=100` : '/default-profile-pic.jpg'}
                     height="100"
                     width="100"
                     alt="pfp"
@@ -44,15 +44,15 @@ const Header: FC<Props> = ({ user, dispatch }) => {
 
                             <div className='user'>
                                 <Image
-                                    src={`https://cdn.discordapp.com/avatars/${user.user_id}/${user.avatar}.webp?size=100`}
-                                    height="50"
-                                    width="50"
+                                    src={user.user_id ? `https://cdn.discordapp.com/avatars/${user.user_id}/${user.avatar}.webp?size=100` : '/default-profile-pic.jpg'}
+                                    height="100"
+                                    width="100"
                                     alt="pfp"
                                     className='profile-pic'
                                 />
                                 <div className="text">
-                                    <span className='username'>{user.username}</span>
-                                    <span className="discriminator">#{user.discriminator}</span>
+                                    <span className='username'>Yamaguchi_</span>
+                                    <span className="discriminator">#4317</span>
                                 </div>
                             </div>
                             <Link href="/">

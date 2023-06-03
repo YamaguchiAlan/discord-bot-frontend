@@ -13,28 +13,34 @@
     box-sizing: border-box
 
 html
-    font-size: calc(18px + (21 - 18) * ((100vw - 320px) / (1440 - 320)))
-    color: $font-color-primary
+    font-size: 16px // calc(18px + (21 - 18) * ((100vw - 320px) / (1440 - 320)))
+    color: $font-primary
     padding: 0
     margin: 0
-    font-family: 'Roboto', sans-serif
+    font-family: 'Poppins', sans-serif
     font-weight: 400
+    -webkit-font-smoothing: antialiased
+    -moz-osx-font-smoothing: grayscale
+    font-smooth: never
 
 body
-    background-color: $main-bg
+    background-color: $black
     padding: 0
     margin: 0
-    font-family: 'Roboto', sans-serif
+    font-family: 'Poppins', sans-serif
     font-weight: 400
     height: 100vh
-    color: $font-color-primary
+    color: $font-primary
+    -webkit-font-smoothing: antialiased
+    -moz-osx-font-smoothing: grayscale
+    font-smooth: never
 
 #__next, #app
     height: 100%
 
 .grid-container
     display: grid
-    grid-template-columns: 0.5rem 1fr 1fr 0.5rem
+    grid-template-columns: 12px 1fr 1fr 12px
     grid-template-rows: auto
     grid-template-areas: ". main main ."
 
@@ -42,30 +48,31 @@ body
     grid-area: main
 
 .body-default-card
-    margin: 1rem 0 1rem 0
-    background-color: $primary-bg
-    border-radius: 20px
-    padding: 1rem 0.5rem
+    margin: 12px 0
+    background-color: $bg-secondary
+    border-radius: 16px
+    padding: 18px 12px
+    box-shadow: 0px 2px 8px rgba(73, 77, 77, 0.15)
 
     & .header
         display: flex
         justify-content: space-between
-        margin-bottom: 0.6rem
+        margin-bottom: 16px
         align-items: center
 
-        & h3, & h4
+        & h4
             margin: 0
-            font-weight: 400
-            font-size: $default-font
+            @include H4($weight: 600)
 
-        & h3
-            font-size: $header-font
+        & h5
+            margin: 0
+            @include H5($weight: 600)
 
     & .searchbar
-        margin-bottom: 1.5rem
+        margin-bottom: 24px
 
 .link
-    color: $light-blue
+    color: $primary
     text-decoration: none
     cursor: pointer
 
@@ -77,10 +84,10 @@ body
     display: flex
     justify-content: center
     align-items: center
-    background-color: #1a1a1a
+    background-color: $bg-secondary
 
     & span
-        font-size: 1.1rem
+        @include H5($weight: 500)
 
 .loader-container
     display: flex
@@ -89,8 +96,8 @@ body
     height: 80%
 
     & .loader
-        border: 8px solid $light-blue
-        border-top: 8px solid #07a084
+        border: 8px solid $primary
+        border-top: 8px solid $secondary
         border-radius: 50%
         width: 50px
         height: 50px
@@ -98,18 +105,19 @@ body
 
 .ReactModal__Overlay
     z-index: 99
-    background: #1b1b1bb7 !important
+    background: #0c1212b2 !important
 
 .ReactModal__Content
-    background: #151616 !important
-    border: 1px solid #323332 !important
+    background: $bg-primary !important
+    border: 1px solid $black-75 !important
     height: fit-content
     width: fit-content
-    inset: 20px !important
-    max-width: calc(100% - 40px)
-    max-height: calc(100% - 40px)
+    inset: 24px !important
+    max-width: calc(100% - 48px)
+    max-height: calc(100% - 48px)
     margin: auto
-    padding: 1.2rem !important
+    padding: 16px 24px !important
+    border-radius: 8px !important
 
 @keyframes spin
     0%
@@ -130,16 +138,22 @@ body
     .body-default-card
         padding: 1rem 0.7rem
 
+    .ReactModal__Content
+        padding: 24px 32px !important
+
 @media only screen and (min-width: 1024px)
+    html
+        font-size: 18px
+
     .grid-container
         grid-template-columns: minmax(1rem, 1fr) repeat(2, 450px) minmax(1rem, 1fr)
 
     .body-default-card
-        padding: 1rem 0.8rem
+        padding: 32px 24px
+
+        & .searchbar
+            margin-bottom: 38px
 
 @media only screen and (min-width: 1440px)
-    html
-        font-size: 21px
-
     .grid-container
         grid-template-columns: minmax(1rem, 1fr) repeat(2, minmax(500px, 1fr)) minmax(1rem, 1fr)

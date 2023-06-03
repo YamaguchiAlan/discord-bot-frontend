@@ -1,97 +1,105 @@
 @import "../_variables.sass"
 
+.body-default-card .notification-header
+    flex-direction: column
+
+    & hr
+        width: 100%
+        margin: 6px 0 0 0
+        border: 1px solid $black-75
+
 .notification-form
     display: flex
     flex-direction: column
 
     & button
-        background-color: #ffffff00
-        border: solid 2px $light-blue
-        font-size: $caption-font
-        font-weight: 700
-        color: $light-blue
-        padding: 0.3rem 0.4rem
-        width: fit-content
-        border-radius: 7px
+        @include H6
+        background-color: transparent
+        border: solid 2px $primary
+        color: $primary
+        border-radius: 8px
         cursor: pointer
 
         &:hover
-            border-color: $light-blue-2
-            color: $light-blue-2
+            border-color: $primary-dark
+            color: $primary-dark
 
     & .notification-label
-        font-size: $big-font
-        font-weight: 500
+        @include H5($weight: 600)
 
     & .input-helper
-        margin-top : 0.2rem
-        font-size: $secondary-font
-        color: $font-color-secondary
+        @include paragraph()
+        color: $font-secondary
 
     & input, & textarea
-        margin-top : 0.2rem
-        background: $primary-bg
+        @include caption()
+        margin-top : 4px
+        background: $input-bg
         border: none
-        padding: 0.5rem 0.7rem
+        padding: 6px 10px
         border-radius: 8px
-        color: $font-color-secondary
-        font-size: $small-font
+        color: $font-primary
         outline: none
-        border: 2px solid $primary-bg
-        margin-bottom: 0.7rem
-        font-family: 'Roboto', sans-serif
+        border: 2px solid rgba(98, 98, 98, 0.15)
+        margin-bottom: 12px
+        font-family: 'Poppins', sans-serif
+
+        &::placeholder
+            color: $font-placeholder
 
         &:hover, &:active, &:focus
             border: 2px solid rgba(209, 209, 209, 0.336)
 
         &.error
-            border: 2px solid rgba(211, 9, 9, 0.705)
+            border: 2px solid $error-dark
 
         &:disabled
-            border: 2px solid $primary-bg
-            background: rgba(70, 70, 70, 0.15)
+            border: 2px solid rgba(98, 98, 98, 0.15)
+            opacity: 0.55
 
     & #channel
-        margin: 0.2rem 0 0.7rem 0
+        margin: 4px 0 12px 0
 
     & .select__control
-        background-color: $primary-bg
-        border: 2px solid $primary-bg
+        @include caption()
+        background-color: $input-bg
+        border: 2px solid rgba(98, 98, 98, 0.15)
         box-shadow: 0 0 0 0 rgba(0, 0, 0, 0)
         cursor: pointer
-        font-size: $small-font
 
         &:hover, &:active, &:focus
             border: 2px solid rgba(209, 209, 209, 0.336)
             outline: none
 
     & .select__single-value, & .select__input-container
-        color: $font-color-secondary
+        color: $font-primary
         margin: 0
 
     & .select__menu
-        background-color: #414141
+        @include caption()
+        background-color: $bg-primary
         border: 1px solid rgba(209, 209, 209, 0.336)
-        font-size: $small-font
 
     & .select__menu-list
-         background-color: #414141
-         border-radius: 10px
+         background-color: $bg-primary
 
     & .select__option
-        background-color: #414141
+        background-color: $bg-primary
         cursor: pointer
 
         &:hover
-            background-color: $light-blue-2
+            background-color: $input-bg
 
     & .notification-message
         display: flex
         flex-direction: column
-        background: $primary-bg
-        margin: 0.3rem 0
-        padding: 0.5rem 0.4rem 0 0.4rem
+        background: $bg-primary
+        margin: 4px 0 12px 0
+        padding: 8px 12px
         border-radius: 8px
+
+        & label
+            @include H6($weight: 600)
 
         & #role
             width: 100%
@@ -100,46 +108,53 @@
         & .role-input
             display: flex
             align-items: center
-            margin: 0.2rem 0
+            margin: 8px 0
 
         & .mention-button
-            margin-left: 5px
+            margin-left: 6px
             white-space: nowrap
-            padding: 0.3rem
+            padding: 4px 8px
+
+        & #message
+            margin: 0
+            max-width: 100%
+            min-width: 100%
 
     & .notification-buttons
         display: flex
-        margin-top: 0.7rem
+        margin-top: 36px
+        gap: 4px
 
-        & .add-button, .cancel-button
-            font-size: $secondary-font
+        & .add-button, & .cancel-button
+            width: 100%
+            padding: 4px 12px
+            white-space: nowrap
 
-            &:disabled
-                border: solid 2px #1dad93
-                color: #1dad93
+        & .add-button:disabled
+            border: solid 2px $secondary
+            color: $secondary
+
         & .cancel-button
-            border: solid 2px #F5222D
-            color: #F5222D
-            margin-left: 0.3rem
+            border: solid 2px $error
+            color: $error
 
             &:hover
-                border: solid 2px #b81c24
-                color: #b81c24
+                border: solid 2px $error-dark
+                color: $error-dark
 
     & .toggle-container
         display: flex
         align-items: center
-        margin-top: 0.3rem
 
-        & strong
-            margin-right: 15px
+        & label
+            margin-right: 8px
 
     & .embeb-config
         position: relative
-        margin-top: 0.3rem
-        margin-left: 0.5rem
-        padding: 0.4rem
-        background: $secondary-bg
+        margin-top: 4px
+        margin-left: 8px
+        padding: 12px 16px
+        background: $bg-primary
         border-radius: 8px
         display: flex
         flex-direction: column
@@ -149,12 +164,45 @@
 
         & .input-helper
             margin-top: 0
-            margin-bottom: 0.3rem
+            margin-bottom: 8px
 
-    & .color-picker-container
-        display: flex
-        align-items:  flex-start
-        flex-direction: column
+        & .title-url
+            margin-bottom: 12px
 
-        .color-picker
-            margin: 3px 0 0 5px
+        & .color-picker-container
+            display: flex
+            align-items:  flex-start
+            flex-direction: column
+            margin-bottom: 12px
+
+            .color-picker
+                margin: 4px 0 0 8px
+
+
+@media only screen and (min-width: 768px)
+    .body-default-card .notification-header hr
+        margin: 12px 0 0 0
+
+    .notification-form
+        & .input-helper
+            margin-top : 4px
+
+        & input, & textarea
+            padding: 8px 12px
+
+        & .notification-message
+            padding: 16px 12px
+
+        & .notification-message .mention-button
+            margin-left: 10px
+            padding: 4px 12px
+
+        & .notification-buttons .add-button, & .cancel-button
+            padding: 6px 12px
+
+        & .toggle-container label
+            margin-right: 12px
+
+        & .embeb-config
+            margin-left: 16px
+            padding: 16px 12px

@@ -120,8 +120,8 @@ const MyServer: FC<Props> = (props) => {
                 </div>
                 <div className="server-notifications body-default-card">
                     <div className="header">
-                        <h3>Notifications</h3>
-                        <h4>{data ? data?.length : '0'}/20</h4>
+                        <h4>Notifications</h4>
+                        <h5>{data ? data?.length : '0'}/20</h5>
                     </div>
 
                     <div className="searchbar">
