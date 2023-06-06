@@ -8,7 +8,7 @@ const secret = process.env.NEXT_PUBLIC_HEADER_SECRET
 const production = process.env.NEXT_PUBLIC_PRODUCTION
 
 const api = axios.create({
-  baseURL: production ? 'https://server.yamabot.tk/api' : 'http://localhost:4000/api',
+  baseURL: production ? 'https://server.yamabot.run.place/api' : 'http://localhost:4000/api',
   headers: {
     common: {
       'Origin-Auth-Secret': secret
@@ -22,7 +22,7 @@ api.interceptors.response.use(function (response) {
   return Promise.reject(error.response)
 })
 
-const backendConfig = { headers: { origin: production ? 'https://app.yamabot.tk' : 'http://localhost:3000' } }
+const backendConfig = { headers: { origin: production ? 'https://www.yamabot.run.place' : 'http://localhost:3000' } }
 
 export const getServers = (): Promise<DiscordGuild[]> => (
   api.get('/servers', { withCredentials: true }).then(res => res.data)
@@ -39,8 +39,8 @@ export const checkServer = (userId: string, guild_id: string, router: NextRouter
       if (err.status === 401 && err.data?.code === 50001) {
         router.push(
           production
-            ? 'https://discord.com/oauth2/authorize?client_id=880599706428928100&permissions=271764480&redirect_uri=https%3A%2F%2Fapp.yamabot.tk&response_type=code&scope=bot'
-            : 'https://discord.com/oauth2/authorize?client_id=880599706428928100&permissions=271764480&redirect_uri=http%3A%2F%2Flocalhost%3A3000&response_type=code&scope=bot'
+            ? 'https://discord.com/api/oauth2/authorize?client_id=880599706428928100&permissions=309241007104&redirect_uri=https%3A%2F%2Fwww.yamabot.run.place&response_type=code&scope=bot%20identify%20guilds%20guilds.join'
+            : 'https://discord.com/api/oauth2/authorize?client_id=880599706428928100&permissions=309241007104&redirect_uri=http%3A%2F%2Flocalhost%3A3000&response_type=code&scope=bot%20identify%20guilds%20guilds.join'
         )
       } else {
         router.push('/')

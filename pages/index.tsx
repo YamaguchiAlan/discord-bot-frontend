@@ -45,9 +45,9 @@ const Home: FC = () => {
       <div className="grid-container">
         <div className="main">
         <div className="main-header">
-          <p>Select a server to add or manage the bot. <br/>
+          <p>Select a server to manage the notifications. <br/>
             Or invite YamaBot to your server <a
-            href={`https://discord.com/oauth2/authorize?client_id=880599706428928100&permissions=271764480&redirect_uri=${production ? 'https%3A%2F%2Fapp.yamabot.tk' : 'http%3A%2F%2Flocalhost%3A3000'}&response_type=code&scope=bot`}
+            href={`https://discord.com/api/oauth2/authorize?client_id=880599706428928100&permissions=309241007104&redirect_uri=${production ? 'https%3A%2F%2Fwww.yamabot.run.place' : 'http%3A%2F%2Flocalhost%3A3000'}&response_type=code&scope=bot%20identify%20guilds%20guilds.join`}
               >here.
             </a>
           </p>
