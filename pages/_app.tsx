@@ -55,7 +55,7 @@ function MyApp ({ Component, pageProps }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Hydrate state={pageProps.dehydratedState}>
+      <Hydrate state={(pageProps as any).dehydratedState}>
         <UserContext.Provider value={{ state, dispatch }}>
           <div id="app">
             <Header user={state.user} dispatch={dispatch}/>
