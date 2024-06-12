@@ -6,9 +6,10 @@ import { removeUser } from '../state/reducer'
 import { DiscordGuild, GuildData, NotificationsData, ServerData, Notification } from '../types'
 const secret = process.env.NEXT_PUBLIC_HEADER_SECRET
 const production = process.env.NEXT_PUBLIC_PRODUCTION
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL
 
 const api = axios.create({
-  baseURL: production ? 'https://server.yamabot.run.place/api' : 'http://localhost:4000/api',
+  baseURL: production ? serverUrl : 'http://localhost:4000/api',
   headers: {
     common: {
       'Origin-Auth-Secret': secret
