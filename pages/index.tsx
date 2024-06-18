@@ -9,7 +9,7 @@ import toast from 'react-hot-toast'
 import ServerCard from '../components/ServerCard'
 import { DiscordGuild } from '../types'
 
-const production = process.env.NEXT_PUBLIC_PRODUCTION
+const inviteUrl = process.env.NEXT_PUBLIC_INVITE_URL
 
 const Home: FC = () => {
   const { data, isLoading, isError } = useQuery(['servers'], () => getServers())
@@ -47,7 +47,7 @@ const Home: FC = () => {
         <div className="main-header">
           <p>Select a server to manage the notifications. <br/>
             Or invite YamaBot to your server <a
-            href={`https://discord.com/api/oauth2/authorize?client_id=880599706428928100&permissions=309241007104&redirect_uri=${production ? 'https%3A%2F%2Fwww.yamabot.run.place' : 'http%3A%2F%2Flocalhost%3A3000'}&response_type=code&scope=bot%20identify%20guilds%20guilds.join`}
+            href={inviteUrl}
               >here.
             </a>
           </p>

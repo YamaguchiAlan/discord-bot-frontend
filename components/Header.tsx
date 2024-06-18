@@ -51,8 +51,7 @@ const Header: FC<Props> = ({ user, dispatch }) => {
                                     className='profile-pic'
                                 />
                                 <div className="text">
-                                    <span className='username'>Yamaguchi_</span>
-                                    <span className="discriminator">#4317</span>
+                                    <span className='username'>{user.username ? user.username : "User"}</span>
                                 </div>
                             </div>
                             <Link href="/">

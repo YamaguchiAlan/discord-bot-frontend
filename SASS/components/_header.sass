@@ -20,16 +20,16 @@
         gap: 12px
 
         & img
-            height: 33px
-            width: 45px
+            height: 33px !important
+            width: 45px !important
 
         & span
             @include H3
 
     & .menu
         & img
-            height: 40px
-            width: 40px
+            height: 40px !important
+            width: 40px !important
             border-radius: 50%
             cursor: pointer
 
@@ -65,14 +65,11 @@
                 cursor: auto !important
 
             & .text
-                display: flex
-                flex-direction: column
+                @include H5($weight: 500)
                 margin-left: 8px
-                height: 40px
+                display: flex
+                align-items: center
 
-                & .discriminator
-                    @include caption
-                    color: $font-secondary
 
 @media only screen and (min-width: 768px)
     #header
@@ -84,22 +81,19 @@
             gap: 16px
 
             & img
-                height: 40px
-                width: 56px
+                height: 40px !important
+                width: 56px !important
 
             & span
                 @include H2
 
         & .menu
             & img
-                height: 48px
-                width: 48px
+                height: 48px !important
+                width: 48px !important
 
             & .dropdown
                 padding: 8px
 
                 & .item
                     padding: 8px
-
-            & .user .text
-                    height: auto
