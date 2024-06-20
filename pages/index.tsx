@@ -11,6 +11,7 @@ import { DiscordGuild } from '../types'
 
 const inviteUrl = process.env.NEXT_PUBLIC_INVITE_URL
 
+
 const Home: FC = () => {
   const { data, isLoading, isError } = useQuery(['servers'], () => getServers())
 
